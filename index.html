@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>IPL 2026 · Advanced Analytics Dashboard</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#09090f;--s1:#111119;--s2:#16161f;--s3:#1d1d28;--bd:rgba(255,255,255,.07);--bd2:rgba(255,255,255,.13);
+  --c1:#FF5722;--c2:#FF8A65;--acc:#FFD54F;--teal:#26C6DA;--grn:#66BB6A;--pur:#AB47BC;--red:#EF5350;--blu:#4FC3F7;
+  --txt:#E4E6F0;--txt2:#8A8EA8;--txt3:#52566A;--r:10px}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--txt);font-family:'Inter',sans-serif;font-size:13px;min-height:100vh}
+
+/* TOPBAR */
+.topbar{background:linear-gradient(135deg,#0c0c18,#131325);border-bottom:1px solid var(--bd2);padding:11px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;gap:10px;flex-wrap:wrap}
+.tb-l{display:flex;align-items:center;gap:12px}
+.title{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:#fff}
+.title em{color:var(--c1);font-style:normal}
+.badge{background:var(--c1);color:#fff;font-size:10px;font-weight:700;padding:3px 9px;border-radius:4px;letter-spacing:1px;font-family:'Barlow Condensed',sans-serif}
+.nav{display:flex;gap:2px;flex-wrap:wrap}
+.nb{font-size:11px;font-weight:500;padding:5px 11px;border-radius:6px;cursor:pointer;border:none;background:transparent;color:var(--txt2);transition:all .15s;white-space:nowrap}
+.nb:hover,.nb.on{background:rgba(255,87,34,.14);color:var(--c1)}
+
+/* LAYOUT */
+.page{padding:14px 16px 50px;max-width:1400px;margin:0 auto}
+.panel{display:none}.panel.on{display:block}
+.sec{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;color:var(--c1);text-transform:uppercase;letter-spacing:3px;margin:22px 0 11px;display:flex;align-items:center;gap:10px}
+.sec::after{content:'';flex:1;height:1px;background:var(--bd)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.g5{display:grid;grid-template-columns:repeat(5,1fr);gap:9px}
+.card{background:var(--s1);border:.5px solid var(--bd);border-radius:var(--r);padding:13px 14px}
+.ct{font-size:10px;font-weight:600;color:var(--txt2);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:9px}
+.cb{position:relative;width:100%}
+
+/* KPI */
+.kpi{background:var(--s2);border:.5px solid var(--bd);border-radius:var(--r);padding:12px 8px;text-align:center;position:relative;overflow:hidden}
+.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--c1)}
+.kpi .v{font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:900;color:var(--c1);line-height:1}
+.kpi .l{font-size:10px;color:var(--txt2);margin-top:4px;text-transform:uppercase;letter-spacing:.5px;line-height:1.35}
+
+/* TABS */
+.tabs{display:flex;gap:3px;margin-bottom:9px;flex-wrap:wrap}
+.tab{font-size:11px;padding:4px 10px;border-radius:20px;cursor:pointer;border:.5px solid var(--bd);color:var(--txt2);background:transparent;transition:all .15s}
+.tab:hover{border-color:var(--c1);color:var(--c1)}
+.tab.on{background:var(--c1);color:#fff;border-color:var(--c1)}
+
+/* PLAYER ROWS */
+.prow{display:flex;align-items:center;gap:6px;padding:5px 0;border-bottom:.5px solid var(--bd)}
+.prow:last-child{border-bottom:none}
+.prk{font-size:10px;color:var(--txt3);width:15px;text-align:right;flex-shrink:0}
+.pnm{font-size:12px;font-weight:500;color:var(--txt);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ptm{font-size:9px;font-weight:700;color:var(--c1);flex-shrink:0;width:32px}
+.pbr{background:rgba(255,255,255,.06);border-radius:2px;height:4px;flex:1;max-width:80px}
+.pbf{height:4px;border-radius:2px;background:var(--c1)}
+.pst{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;color:var(--c1);min-width:36px;text-align:right}
+.psb{font-size:10px;color:var(--txt3);text-align:right;min-width:50px}
+
+/* NRR TABLE */
+.ttbl{width:100%;border-collapse:collapse}
+.ttbl th{font-size:9px;font-weight:700;color:var(--txt3);text-transform:uppercase;letter-spacing:.8px;padding:5px 6px;text-align:right;border-bottom:.5px solid var(--bd);white-space:nowrap}
+.ttbl th:first-child,.ttbl th:nth-child(2){text-align:left}
+.ttbl td{font-size:12px;padding:5px 6px;border-bottom:.5px solid rgba(255,255,255,.035);text-align:right;vertical-align:middle}
+.ttbl td:first-child{font-size:10px;font-weight:700;letter-spacing:.5px}
+.ttbl td:nth-child(2){text-align:left;font-weight:500;color:var(--txt)}
+.ttbl tr.q td:first-child{color:var(--c1)}
+.ttbl tr:last-child td{border-bottom:none}
+.ttbl tr:hover td{background:rgba(255,87,34,.04)}
+.pos{color:var(--grn);font-weight:700}.neg{color:var(--red);font-weight:700}
+.wp{background:#1e6e3c;color:#a8e6bf;font-size:10px;font-weight:700;padding:1px 5px;border-radius:3px}
+.lp{background:#6e1e1e;color:#f5a5a5;font-size:10px;font-weight:700;padding:1px 5px;border-radius:3px}
+.nrp{background:rgba(90,90,90,.3);color:var(--txt2);font-size:10px;font-weight:700;padding:1px 5px;border-radius:3px}
+
+/* SLICERS */
+.slicers{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:11px;padding:9px 12px;background:var(--s2);border-radius:8px;border:.5px solid var(--bd)}
+.slicers label{font-size:10px;font-weight:600;color:var(--txt3);text-transform:uppercase;letter-spacing:.8px;align-self:center}
+.slicers select,.slicers input{font-size:11px;padding:3px 8px;border-radius:6px;background:var(--s3);border:.5px solid var(--bd2);color:var(--txt);outline:none;cursor:pointer}
+.slicers select:focus,.slicers input:focus{border-color:var(--c1)}
+.sep{width:1px;background:var(--bd);align-self:stretch}
+
+/* PARTNERSHIP */
+.pship{display:flex;align-items:center;gap:7px;padding:6px 0;border-bottom:.5px solid var(--bd)}
+.pship:last-child{border-bottom:none}
+.psn{font-size:11px;color:var(--txt);flex:1;line-height:1.3;min-width:0}
+.psn b{color:var(--c2)}
+.psbr{flex:1;background:rgba(255,255,255,.06);border-radius:2px;height:4px;max-width:80px}
+.psbf{height:4px;border-radius:2px;background:linear-gradient(90deg,var(--c1),var(--acc))}
+.psr{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;color:var(--acc);min-width:28px;text-align:right}
+.pss{font-size:10px;color:var(--txt3);min-width:58px;text-align:right}
+.ptag{font-size:9px;font-weight:700;padding:1px 5px;border-radius:3px;background:rgba(255,87,34,.2);color:var(--c1);flex-shrink:0}
+
+/* VENUE */
+.vcards{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
+.vcard{background:var(--s2);border:.5px solid var(--bd);border-radius:8px;padding:10px 11px}
+.vname{font-size:11px;font-weight:600;color:var(--txt);margin-bottom:7px;line-height:1.3}
+.vstats{display:flex;gap:4px}
+.vs{text-align:center;flex:1;min-width:0}
+.vs .vv{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;color:var(--c1)}
+.vs .vl{font-size:8px;color:var(--txt3);text-transform:uppercase;letter-spacing:.4px}
+.vbar{background:rgba(255,255,255,.06);border-radius:2px;height:3px;margin-top:5px}
+.vbarf{height:3px;border-radius:2px}
+
+/* PIVOT */
+.pvt-wrap{overflow:auto;border-radius:8px;border:.5px solid var(--bd);max-height:560px}
+.pvt{width:100%;border-collapse:collapse;font-size:11px;min-width:700px}
+.pvt thead th{background:var(--s3);font-size:9px;font-weight:700;color:var(--txt3);text-transform:uppercase;letter-spacing:.8px;padding:7px 8px;text-align:right;white-space:nowrap;position:sticky;top:0;z-index:2;cursor:pointer;user-select:none}
+.pvt thead th:first-child{text-align:left;padding-left:12px}
+.pvt thead th:hover{color:var(--c1)}
+.pvt td{padding:5px 8px;border-bottom:.5px solid rgba(255,255,255,.035);text-align:right;white-space:nowrap;vertical-align:middle}
+.pvt td:first-child{text-align:left;font-weight:600;padding-left:12px;color:var(--txt);position:sticky;left:0;background:var(--s1)}
+.pvt tr:hover td{background:rgba(255,87,34,.04)}
+.pvt tr:last-child td{border-bottom:none}
+.hi{color:var(--grn);font-weight:700}.lo{color:var(--red);font-weight:700}.mi{color:var(--acc);font-weight:700}
+
+/* CD */
+.cd-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:9px}
+.cd-card{background:var(--s2);border:.5px solid var(--bd);border-radius:8px;padding:10px}
+.cd-team{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:900;color:var(--c1);margin-bottom:6px;text-align:center}
+.cd-boxes{display:flex;gap:4px}
+.cd-b{flex:1;background:var(--s3);border-radius:6px;padding:6px 4px;text-align:center}
+.cd-b .cv{font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:700}
+.cd-b .cl{font-size:8px;color:var(--txt3);text-transform:uppercase;letter-spacing:.4px;margin-top:1px}
+.cd-b.c .cv{color:var(--teal)}.cd-b.d .cv{color:var(--pur)}
+.cd-bars{margin-top:6px;display:flex;gap:2px;height:4px}
+.cd-bar{border-radius:2px;height:4px}
+
+/* TEI */
+.tei-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:11px}
+
+/* MISC */
+.tip{font-size:10px;color:var(--txt3);margin-top:6px;font-style:italic;line-height:1.5}
+@media(max-width:900px){.g2,.g3,.g5,.vcards,.cd-grid,.tei-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="tb-l">
+    <div class="title">IPL <em>2026</em> · Advanced Analytics</div>
+    <span class="badge">74 Matches · Season 19 · Ball-by-Ball Data</span>
+  </div>
+  <nav class="nav">
+    <button class="nb on"  onclick="go('overview',this)">Overview</button>
+    <button class="nb"     onclick="go('phase',this)">Phase Analysis</button>
+    <button class="nb"     onclick="go('batting',this)">Batting</button>
+    <button class="nb"     onclick="go('bowling',this)">Bowling</button>
+    <button class="nb"     onclick="go('cd',this)">Chase / Defend</button>
+    <button class="nb"     onclick="go('partner',this)">Partnerships</button>
+    <button class="nb"     onclick="go('venue',this)">Venues</button>
+    <button class="nb"     onclick="go('tei',this)">TEI &amp; Radar</button>
+    <button class="nb"     onclick="go('pivot',this)">Pivot Tables</button>
+  </nav>
+</div>
+
+<div class="page">
+
+<!-- ═══════ OVERVIEW ═══════ -->
+<div id="panel-overview" class="panel on">
+  <div class="g5" style="margin-bottom:6px">
+    <div class="kpi"><div class="v">+0.921</div><div class="l">Best NRR<br>RCB</div></div>
+    <div class="kpi"><div class="v">776</div><div class="l">Top Runs<br>Suryavanshi · RR</div></div>
+    <div class="kpi"><div class="v">29</div><div class="l">Top Wickets<br>K Rabada · DC</div></div>
+    <div class="kpi"><div class="v">225.6</div><div class="l">Top SR (min 100b)<br>Suryavanshi</div></div>
+    <div class="kpi"><div class="v">50%</div><div class="l">Toss → Win<br>Season Rate</div></div>
+  </div>
+
+  <div class="sec">Official Points Table — Net Run Rate</div>
+  <div class="card">
+    <table class="ttbl" id="nrr-tbl"></table>
+    <p class="tip">★ NRR = (Runs Scored ÷ Overs Faced) − (Runs Conceded ÷ Overs Bowled) · Computed from ball-by-ball data · Top 4 qualify for playoffs</p>
+  </div>
+
+  <div class="sec">Season Snapshot</div>
+  <div class="g2">
+    <div class="card">
+      <div class="ct">Batting vs Bowling RPO per Team</div>
+      <div class="cb" style="height:240px"><canvas id="rpo-c"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="ct">Team Boundaries — Fours &amp; Sixes</div>
+      <div class="cb" style="height:240px"><canvas id="bdry-c"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ PHASE ═══════ -->
+<div id="panel-phase" class="panel">
+  <div class="sec">Batting Run Rate by Phase</div>
+  <div class="card">
+    <div class="cb" style="height:250px"><canvas id="ph-bat-c"></canvas></div>
+    <p class="tip">League averages: Powerplay 10.17 · Middle 9.27 · Death 10.75 · Cells highlighted above/below league avg</p>
+  </div>
+
+  <div class="sec">Bowling Run Rate Conceded by Phase</div>
+  <div class="card">
+    <div class="cb" style="height:250px"><canvas id="ph-bwl-c"></canvas></div>
+    <p class="tip">Lower = better for bowling. RCB (9.31) and GT (8.97) most economical in middle overs.</p>
+  </div>
+
+  <div class="g2" style="margin-top:14px">
+    <div class="card">
+      <div class="ct">Wickets Lost per Phase (Batting)</div>
+      <div class="cb" style="height:230px"><canvas id="ph-wl-c"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="ct">Wickets Taken per Phase (Bowling)</div>
+      <div class="cb" style="height:230px"><canvas id="ph-wt-c"></canvas></div>
+    </div>
+  </div>
+
+  <div class="sec">Phase Detail Table</div>
+  <div class="card" style="overflow-x:auto">
+    <table class="ttbl" id="ph-tbl"></table>
+  </div>
+</div>
+
+<!-- ═══════ BATTING ═══════ -->
+<div id="panel-batting" class="panel">
+  <div class="slicers">
+    <label>Sort</label>
+    <select id="bs-sort" onchange="rBat()">
+      <option value="r">Runs</option>
+      <option value="sr">Strike Rate</option>
+      <option value="avg">Average</option>
+      <option value="bii">Impact Index (BII)</option>
+      <option value="s6">Sixes</option>
+      <option value="bdry">Boundary Run %</option>
+    </select>
+    <div class="sep"></div>
+    <label>Team</label>
+    <select id="bs-team" onchange="rBat()">
+      <option value="">All</option>
+      <option>RCB</option><option>SRH</option><option>RR</option><option>PBKS</option><option>GT</option>
+      <option>DC</option><option>CSK</option><option>KKR</option><option>MI</option><option>LSG</option>
+    </select>
+    <div class="sep"></div>
+    <label>Min Runs</label>
+    <input type="number" id="bs-min" value="200" min="0" style="width:58px" onchange="rBat()">
+  </div>
+
+  <div class="g2">
+    <div class="card" style="height:500px;overflow-y:auto">
+      <div class="tabs">
+        <button class="tab on" onclick="bTab('r',this)">Runs</button>
+        <button class="tab" onclick="bTab('sr',this)">SR</button>
+        <button class="tab" onclick="bTab('avg',this)">Avg</button>
+        <button class="tab" onclick="bTab('bii',this)">BII</button>
+        <button class="tab" onclick="bTab('s6',this)">Sixes</button>
+        <button class="tab" onclick="bTab('bdry',this)">Bdry%</button>
+      </div>
+      <div id="bat-list"></div>
+    </div>
+    <div class="card">
+      <div class="ct">Avg vs Strike Rate · bubble = Runs scored</div>
+      <div class="cb" style="height:220px"><canvas id="bat-bubble"></canvas></div>
+      <div class="ct" style="margin-top:14px">Batting Impact Index — Top 15</div>
+      <div class="cb" style="height:215px"><canvas id="bii-c"></canvas></div>
+      <p class="tip">BII = (Runs/Inn) × (SR ÷ League SR 155) × (Avg ÷ League Avg 32) × (1 + Boundary% × 0.3)</p>
+    </div>
+  </div>
+
+  <div class="sec">Individual Batter Phase Split Table</div>
+  <div class="pvt-wrap"><table class="pvt" id="bat-phase-tbl"></table></div>
+</div>
+
+<!-- ═══════ BOWLING ═══════ -->
+<div id="panel-bowling" class="panel">
+  <div class="slicers">
+    <label>Sort</label>
+    <select id="ws-sort" onchange="rBwl()">
+      <option value="w">Wickets</option>
+      <option value="econ">Economy</option>
+      <option value="avg">Average</option>
+      <option value="bii">Impact Index</option>
+      <option value="dot">Dot Ball %</option>
+      <option value="sr">Bowling SR</option>
+    </select>
+    <div class="sep"></div>
+    <label>Team</label>
+    <select id="ws-team" onchange="rBwl()">
+      <option value="">All</option>
+      <option>RCB</option><option>SRH</option><option>RR</option><option>PBKS</option><option>GT</option>
+      <option>DC</option><option>CSK</option><option>KKR</option><option>MI</option><option>LSG</option>
+    </select>
+  </div>
+
+  <div class="g2">
+    <div class="card" style="height:500px;overflow-y:auto">
+      <div class="tabs">
+        <button class="tab on" onclick="wTab('w',this)">Wickets</button>
+        <button class="tab" onclick="wTab('econ',this)">Economy</button>
+        <button class="tab" onclick="wTab('avg',this)">Avg</button>
+        <button class="tab" onclick="wTab('bii',this)">BowlII</button>
+        <button class="tab" onclick="wTab('dot',this)">Dot%</button>
+      </div>
+      <div id="bwl-list"></div>
+    </div>
+    <div class="card">
+      <div class="ct">Economy vs Wickets Scatter</div>
+      <div class="cb" style="height:220px"><canvas id="bwl-sc"></canvas></div>
+      <div class="ct" style="margin-top:14px">Bowling Impact Index — Top 14</div>
+      <div class="cb" style="height:215px"><canvas id="bii2-c"></canvas></div>
+      <p class="tip">BowlII = (Wkts/Inn) × (1 + Economy Saving) × Dot Ball Bonus × 10 · Lower econ &amp; higher dot% = higher BowlII</p>
+    </div>
+  </div>
+
+  <div class="sec">Bowling Fact Table</div>
+  <div class="pvt-wrap"><table class="pvt" id="bwl-pvt"></table></div>
+</div>
+
+<!-- ═══════ CHASE / DEFEND ═══════ -->
+<div id="panel-cd" class="panel">
+  <div class="sec">Chase vs Defend Win Rate</div>
+  <div class="card">
+    <div class="cb" style="height:260px"><canvas id="cd-c"></canvas></div>
+  </div>
+
+  <div class="sec">Team Chase &amp; Defend Cards</div>
+  <div class="cd-grid" id="cd-cards"></div>
+
+  <div class="sec">Chase / Defend Analysis Table</div>
+  <div class="pvt-wrap"><table class="pvt" id="cd-tbl"></table></div>
+</div>
+
+<!-- ═══════ PARTNERSHIPS ═══════ -->
+<div id="panel-partner" class="panel">
+  <div class="slicers">
+    <label>Team</label>
+    <select id="ps-team" onchange="rPs()">
+      <option value="">All</option>
+      <option>RCB</option><option>SRH</option><option>RR</option><option>PBKS</option><option>GT</option>
+      <option>DC</option><option>CSK</option><option>KKR</option><option>MI</option><option>LSG</option>
+    </select>
+    <div class="sep"></div>
+    <label>Sort</label>
+    <select id="ps-sort" onchange="rPs()">
+      <option value="r">Runs</option>
+      <option value="sr">Strike Rate</option>
+    </select>
+  </div>
+
+  <div class="g2">
+    <div class="card" style="height:530px;overflow-y:auto">
+      <div class="ct">Top Partnership Stands (Ball-by-Ball Tracked)</div>
+      <div id="ps-list"></div>
+    </div>
+    <div class="card">
+      <div class="ct">Top 12 Partnerships by Runs</div>
+      <div class="cb" style="height:240px"><canvas id="ps-bar"></canvas></div>
+      <div class="ct" style="margin-top:12px">Top 10 by Strike Rate (min 50 runs)</div>
+      <div class="cb" style="height:235px"><canvas id="ps-sr"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ VENUE ═══════ -->
+<div id="panel-venue" class="panel">
+  <div class="sec">1st vs 2nd Innings Average Score</div>
+  <div class="card">
+    <div class="cb" style="height:280px"><canvas id="ven-c"></canvas></div>
+  </div>
+
+  <div class="sec">Venue Profile Cards</div>
+  <div class="vcards" id="ven-cards"></div>
+
+  <div class="sec">Venue Analytics Table</div>
+  <div class="pvt-wrap"><table class="pvt" id="ven-tbl"></table></div>
+</div>
+
+<!-- ═══════ TEI & RADAR ═══════ -->
+<div id="panel-tei" class="panel">
+  <div class="sec">Team Efficiency Index (TEI)</div>
+  <p class="tip" style="margin-bottom:10px">TEI formula: Win% (35%) + NRR normalised (20%) + Batting Phase Composite (20%) + Bowling Efficiency (15%) + Chase+Defend composite (10%). Max possible ≈ 100.</p>
+  <div class="g2">
+    <div class="card">
+      <div class="ct">TEI Score Ranking</div>
+      <div class="cb" style="height:270px"><canvas id="tei-bar"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="ct">TEI Component Breakdown (Stacked)</div>
+      <div class="cb" style="height:270px"><canvas id="tei-stk"></canvas></div>
+    </div>
+  </div>
+
+  <div class="sec">Radar Comparison — select two teams</div>
+  <div class="slicers">
+    <label>Team A</label>
+    <select id="ra" onchange="drawRadar()">
+      <option>RCB</option><option>SRH</option><option>RR</option><option>PBKS</option><option>GT</option>
+      <option>DC</option><option>CSK</option><option>KKR</option><option>MI</option><option>LSG</option>
+    </select>
+    <label>Team B</label>
+    <select id="rb" onchange="drawRadar()">
+      <option>SRH</option><option>RCB</option><option>RR</option><option>PBKS</option><option>GT</option>
+      <option>DC</option><option>CSK</option><option>KKR</option><option>MI</option><option>LSG</option>
+    </select>
+  </div>
+  <div class="g2">
+    <div class="card">
+      <div class="ct" id="rad-title">Radar Chart</div>
+      <div class="cb" style="height:300px"><canvas id="rad-c"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="ct">Radar Source Table</div>
+      <table class="pvt" id="rad-src"></table>
+      <p class="tip" style="margin-top:8px">All radar axes normalised 0–100 vs season extremes. Green = winner for that metric.</p>
+    </div>
+  </div>
+
+  <div class="sec">TEI Detail Cards — All Teams</div>
+  <div class="tei-grid" id="tei-cards"></div>
+</div>
+
+<!-- ═══════ PIVOT ═══════ -->
+<div id="panel-pivot" class="panel">
+  <div class="slicers">
+    <label>Table</label>
+    <select id="pv-sel" onchange="rPivot()">
+      <option value="bat">Batting Fact Table</option>
+      <option value="bwl">Bowling Fact Table</option>
+      <option value="team">Team Fact Table</option>
+      <option value="phase">Phase Fact Table</option>
+      <option value="venue">Venue Fact Table</option>
+      <option value="ps">Partnership Fact Table</option>
+    </select>
+    <div class="sep"></div>
+    <label>Team</label>
+    <select id="pv-team" onchange="rPivot()">
+      <option value="">All</option>
+      <option>RCB</option><option>SRH</option><option>RR</option><option>PBKS</option><option>GT</option>
+      <option>DC</option><option>CSK</option><option>KKR</option><option>MI</option><option>LSG</option>
+    </select>
+    <div class="sep"></div>
+    <label>Search</label>
+    <input type="text" id="pv-q" placeholder="name / team…" style="width:110px" oninput="rPivot()">
+  </div>
+  <div class="pvt-wrap"><table class="pvt" id="pv-tbl"></table></div>
+  <p class="tip" style="margin-top:8px">Click column headers to sort · Use slicers to filter · Copy-paste into Excel for further pivot analysis</p>
+</div>
+
+</div><!-- /page -->
+
+<script>
+// ════════ DATA (from ball-by-ball extraction) ════════
+const TC='rgba(180,185,210,.7)', GC='rgba(255,255,255,.05)';
+const TCLR={RCB:'#FF5722',SRH:'#FF9800',RR:'#26C6DA',PBKS:'#FFD54F',GT:'#66BB6A',
+            DC:'#4FC3F7',CSK:'#FDD835',KKR:'#AB47BC',MI:'#1565C0',LSG:'#81C784'};
+
+const NRR=[
+  {s:'RCB',name:'Royal Challengers Bengaluru',m:16,w:11,l:5,nr:0,pts:22,nrr:+0.921,rb:10.433,rw:9.512,cw:7,cl:2,dw:4,dl:3},
+  {s:'SRH',name:'Sunrisers Hyderabad',        m:15,w:9, l:6,nr:0,pts:18,nrr:+0.386,rb:10.529,rw:10.144,cw:3,cl:2,dw:6,dl:4},
+  {s:'RR', name:'Rajasthan Royals',           m:16,w:9, l:7,nr:0,pts:18,nrr:+0.297,rb:10.398,rw:10.101,cw:4,cl:2,dw:5,dl:5},
+  {s:'PBKS',name:'Punjab Kings',              m:13,w:7, l:6,nr:1,pts:14,nrr:+0.304,rb:10.786,rw:10.483,cw:6,cl:2,dw:1,dl:4},
+  {s:'GT', name:'Gujarat Titans',             m:17,w:10,l:7,nr:0,pts:20,nrr:-0.061,rb:9.501, rw:9.562, cw:6,cl:4,dw:4,dl:3},
+  {s:'DC', name:'Delhi Capitals',             m:14,w:7, l:7,nr:0,pts:14,nrr:-0.681,rb:9.460, rw:10.141,cw:6,cl:3,dw:1,dl:4},
+  {s:'CSK',name:'Chennai Super Kings',        m:14,w:6, l:8,nr:0,pts:12,nrr:-0.200,rb:9.382, rw:9.582, cw:3,cl:3,dw:3,dl:5},
+  {s:'KKR',name:'Kolkata Knight Riders',      m:12,w:5, l:7,nr:2,pts:10,nrr:-0.022,rb:9.240, rw:9.262, cw:4,cl:3,dw:1,dl:4},
+  {s:'MI', name:'Mumbai Indians',             m:14,w:4, l:10,nr:0,pts:8, nrr:-0.730,rb:9.520, rw:10.250,cw:3,cl:4,dw:1,dl:6},
+  {s:'LSG',name:'Lucknow Super Giants',       m:13,w:4, l:9, nr:1,pts:8, nrr:-0.718,rb:9.157, rw:9.874, cw:3,cl:2,dw:1,dl:7},
+];
+
+const PHASE=[
+  {s:'RCB', bp:10.42,bm:9.98, bd:11.47,wp:9.31, wm:9.31, wd:10.23,ppw:23,mw:40,dw:21,bppw:36,bmw:35,bdw:36},
+  {s:'SRH', bp:11.06,bm:10.12,bd:10.64,wp:11.10,wm:9.56, wd:10.02,ppw:23,mw:40,dw:38,bppw:25,bmw:36,bdw:34},
+  {s:'RR',  bp:11.67,bm:9.56, bd:10.28,wp:10.43,wm:9.59, wd:10.69,ppw:24,mw:41,dw:34,bppw:29,bmw:46,bdw:30},
+  {s:'PBKS',bp:10.83,bm:9.95, bd:12.51,wp:10.68,wm:9.55, wd:11.97,ppw:18,mw:33,dw:23,bppw:17,bmw:29,bdw:21},
+  {s:'GT',  bp:9.63, bm:9.21, bd:9.96, wp:9.33, wm:8.97, wd:11.25,ppw:20,mw:39,dw:32,bppw:35,bmw:56,bdw:32},
+  {s:'DC',  bp:8.63, bm:9.15, bd:11.28,wp:10.36,wm:9.98, wd:10.16,ppw:26,mw:31,dw:30,bppw:14,bmw:30,bdw:26},
+  {s:'CSK', bp:9.92, bm:8.56, bd:10.33,wp:9.90, wm:8.78, wd:10.89,ppw:30,mw:30,dw:24,bppw:16,bmw:39,bdw:27},
+  {s:'KKR', bp:8.85, bm:8.92, bd:10.59,wp:10.33,wm:8.06, wd:10.18,ppw:27,mw:33,dw:17,bppw:18,bmw:31,bdw:38},
+  {s:'MI',  bp:9.26, bm:9.34, bd:10.24,wp:10.83,wm:9.44, wd:11.22,ppw:28,mw:32,dw:30,bppw:24,bmw:30,bdw:21},
+  {s:'LSG', bp:10.21,bm:7.93, bd:10.22,wp:8.92, wm:9.86, wd:11.37,ppw:19,mw:42,dw:34,bppw:24,bmw:29,bdw:18},
+];
+const LP=10.17,LM=9.27,LD=10.75; // league phase averages
+
+const BAT=[
+  {n:'V Suryavanshi',  t:'RR',  inn:16,r:776, b:344,avg:48.50,sr:225.58,s4:63,s6:72, dot:31.1,bdry:88.1,pp_r:521,pp_b:235,mid_r:226,mid_b:99, dth_r:29, dth_b:10},
+  {n:'Shubman Gill',   t:'GT',  inn:16,r:732, b:472,avg:45.75,sr:155.08,s4:74,s6:33, dot:28.4,bdry:67.5,pp_r:330,pp_b:218,mid_r:365,mid_b:228,dth_r:37, dth_b:26},
+  {n:'B Sai Sudharsan',t:'GT',  inn:17,r:722, b:481,avg:45.12,sr:150.10,s4:75,s6:30, dot:28.3,bdry:66.5,pp_r:347,pp_b:259,mid_r:299,mid_b:185,dth_r:76, dth_b:37},
+  {n:'V Kohli',        t:'RCB', inn:16,r:675, b:425,avg:56.25,sr:158.82,s4:73,s6:25, dot:23.1,bdry:65.5,pp_r:360,pp_b:215,mid_r:249,mid_b:183,dth_r:66, dth_b:27},
+  {n:'H Klaasen',      t:'SRH', inn:13,r:624, b:413,avg:48.00,sr:151.09,s4:48,s6:31, dot:24.2,bdry:60.6,pp_r:21, pp_b:22, mid_r:418,mid_b:282,dth_r:185,dth_b:109},
+  {n:'Ishan Kishan',   t:'SRH', inn:15,r:602, b:342,avg:40.13,sr:176.02,s4:60,s6:32, dot:25.1,bdry:71.8,pp_r:187,pp_b:106,mid_r:353,mid_b:203,dth_r:62, dth_b:33},
+  {n:'KL Rahul',       t:'DC',  inn:14,r:593, b:355,avg:45.62,sr:167.04,s4:56,s6:31, dot:24.5,bdry:69.1,pp_r:241,pp_b:163,mid_r:284,mid_b:156,dth_r:68, dth_b:36},
+  {n:'Abhishek Sharma',t:'SRH', inn:15,r:563, b:304,avg:40.21,sr:185.20,s4:50,s6:43, dot:27.6,bdry:81.3,pp_r:369,pp_b:191,mid_r:174,mid_b:94, dth_r:20, dth_b:19},
+  {n:'MR Marsh',       t:'LSG', inn:13,r:563, b:358,avg:43.31,sr:157.26,s4:51,s6:36, dot:31.8,bdry:74.6,pp_r:321,pp_b:194,mid_r:210,mid_b:141,dth_r:32, dth_b:23},
+  {n:'JC Buttler',     t:'GT',  inn:17,r:526, b:352,avg:37.57,sr:149.43,s4:51,s6:26, dot:31.0,bdry:68.4,pp_r:167,pp_b:105,mid_r:284,mid_b:201,dth_r:75, dth_b:46},
+  {n:'Dhruv Jurel',    t:'RR',  inn:16,r:515, b:345,avg:36.79,sr:149.28,s4:47,s6:24, dot:29.3,bdry:64.5,pp_r:128,pp_b:82, mid_r:312,mid_b:211,dth_r:75, dth_b:52},
+  {n:'P Simran Singh', t:'PBKS',inn:13,r:510, b:316,avg:42.50,sr:161.39,s4:55,s6:23, dot:28.2,bdry:70.2,pp_r:280,pp_b:174,mid_r:229,mid_b:141,dth_r:1,  dth_b:1},
+  {n:'RM Patidar',     t:'RCB', inn:14,r:501, b:276,avg:41.75,sr:181.52,s4:30,s6:42, dot:22.8,bdry:74.3,pp_r:37, pp_b:44, mid_r:322,mid_b:173,dth_r:142,dth_b:59},
+  {n:'SS Iyer',        t:'PBKS',inn:13,r:498, b:306,avg:55.33,sr:162.75,s4:39,s6:30, dot:25.2,bdry:67.5,pp_r:57, pp_b:44, mid_r:290,mid_b:187,dth_r:151,dth_b:75},
+  {n:'C Connolly',     t:'PBKS',inn:13,r:491, b:316,avg:44.64,sr:155.38,s4:43,s6:32, dot:33.5,bdry:74.1,pp_r:137,pp_b:108,mid_r:260,mid_b:169,dth_r:94, dth_b:39},
+  {n:'SV Samson',      t:'CSK', inn:14,r:477, b:295,avg:43.36,sr:161.69,s4:53,s6:24, dot:32.9,bdry:74.6,pp_r:239,pp_b:161,mid_r:166,mid_b:97, dth_r:72, dth_b:37},
+  {n:'D Padikkal',     t:'RCB', inn:15,r:464, b:283,avg:33.14,sr:163.96,s4:49,s6:24, dot:27.9,bdry:73.3,pp_r:245,pp_b:141,mid_r:219,mid_b:142,dth_r:0,  dth_b:0},
+  {n:'RD Rickelton',   t:'MI',  inn:12,r:448, b:247,avg:40.73,sr:181.38,s4:31,s6:38, dot:33.2,bdry:78.6,pp_r:257,pp_b:151,mid_r:167,mid_b:82, dth_r:24, dth_b:14},
+  {n:'YBK Jaiswal',    t:'RR',  inn:16,r:427, b:296,avg:30.50,sr:144.26,s4:52,s6:18, dot:36.5,bdry:74.0,pp_r:302,pp_b:198,mid_r:125,mid_b:98, dth_r:0,  dth_b:0},
+  {n:'A Raghuvanshi',  t:'KKR', inn:12,r:422, b:302,avg:42.20,sr:139.74,s4:40,s6:19, dot:30.8,bdry:64.9,pp_r:129,pp_b:110,mid_r:214,mid_b:150,dth_r:79, dth_b:42},
+  {n:'TM Head',        t:'SRH', inn:15,r:410, b:253,avg:27.33,sr:162.06,s4:46,s6:23, dot:37.5,bdry:78.5,pp_r:337,pp_b:208,mid_r:73, mid_b:45, dth_r:0,  dth_b:0},
+  {n:'Priyansh Arya',  t:'PBKS',inn:13,r:364, b:181,avg:28.00,sr:201.10,s4:27,s6:32, dot:30.4,bdry:82.4,pp_r:294,pp_b:146,mid_r:70, mid_b:35, dth_r:0,  dth_b:0},
+  {n:'FH Allen',       t:'KKR', inn:11,r:349, b:168,avg:34.90,sr:207.74,s4:33,s6:28, dot:33.9,bdry:86.0,pp_r:207,pp_b:118,mid_r:142,mid_b:50, dth_r:0,  dth_b:0},
+];
+BAT.forEach(b=>{
+  b.bii=+(b.r/b.inn*(b.sr/155)*(b.avg/32)*(1+(b.bdry/100)*0.3)).toFixed(2);
+});
+
+const BWL=[
+  {n:'K Rabada',          t:'DC',  w:29,ov:64.7,r:631,econ:9.76, avg:21.76,sr:13.4,dot:43.0,pp_rr:10.00,mid_rr:9.00, dth_rr:9.33, pp_w:20,mid_w:3,  dth_w:6},
+  {n:'B Kumar',           t:'RCB', w:28,ov:63.0,r:504,econ:8.00, avg:18.00,sr:13.5,dot:39.4,pp_rr:7.00, mid_rr:9.80, dth_rr:9.04, pp_w:17,mid_w:1,  dth_w:10},
+  {n:'JC Archer',         t:'RR',  w:25,ov:60.0,r:566,econ:9.43, avg:22.64,sr:14.4,dot:42.8,pp_rr:10.18,mid_rr:6.67, dth_rr:9.41, pp_w:14,mid_w:4,  dth_w:7},
+  {n:'Rashid Khan',       t:'GT',  w:21,ov:56.8,r:527,econ:9.27, avg:25.10,sr:16.2,dot:32.0,pp_rr:4.50, mid_rr:8.86, dth_rr:12.44,pp_w:0, mid_w:19, dth_w:2},
+  {n:'A Kamboj',          t:'RCB', w:21,ov:50.3,r:535,econ:10.63,avg:25.48,sr:14.4,dot:37.1,pp_rr:10.43,mid_rr:9.62, dth_rr:11.20,pp_w:5, mid_w:3,  dth_w:13},
+  {n:'E Malinga',         t:'LSG', w:20,ov:54.3,r:510,econ:9.39, avg:25.50,sr:16.3,dot:35.0,pp_rr:9.00, mid_rr:8.61, dth_rr:10.71,pp_w:5, mid_w:7,  dth_w:8},
+  {n:'Rasikh Salam',      t:'RCB', w:19,ov:42.8,r:407,econ:9.50, avg:21.42,sr:13.5,dot:31.9,pp_rr:8.47, mid_rr:10.33,dth_rr:10.05,pp_w:5, mid_w:4,  dth_w:10},
+  {n:'Mohammed Siraj',    t:'RCB', w:19,ov:62.0,r:570,econ:9.19, avg:30.00,sr:19.6,dot:44.1,pp_rr:8.17, mid_rr:11.67,dth_rr:12.58,pp_w:15,mid_w:0,  dth_w:4},
+  {n:'Kartik Tyagi',      t:'SRH', w:18,ov:51.0,r:504,econ:9.88, avg:28.00,sr:17.0,dot:35.0,pp_rr:11.45,mid_rr:8.15, dth_rr:10.75,pp_w:4, mid_w:5,  dth_w:9},
+  {n:'JO Holder',         t:'RR',  w:17,ov:38.3,r:292,econ:7.62, avg:17.18,sr:13.5,dot:40.0,pp_rr:10.00,mid_rr:7.42, dth_rr:7.88, pp_w:0, mid_w:13, dth_w:4},
+  {n:'SP Narine',         t:'KKR', w:17,ov:51.5,r:350,econ:6.80, avg:20.59,sr:18.2,dot:43.0,pp_rr:7.92, mid_rr:6.67, dth_rr:5.67, pp_w:4, mid_w:4,  dth_w:9},
+  {n:'M Prasidh Krishna', t:'GT',  w:16,ov:39.0,r:408,econ:10.46,avg:25.50,sr:14.6,dot:33.3,pp_rr:14.00,mid_rr:9.48, dth_rr:12.40,pp_w:0, mid_w:13, dth_w:3},
+  {n:'Prince Yadav',      t:'DC',  w:16,ov:52.2,r:469,econ:8.99, avg:29.31,sr:19.6,dot:36.4,pp_rr:8.82, mid_rr:7.94, dth_rr:10.18,pp_w:6, mid_w:7,  dth_w:3},
+  {n:'JR Hazlewood',      t:'CSK', w:15,ov:51.5,r:506,econ:9.83, avg:33.73,sr:20.6,dot:38.2,pp_rr:10.15,mid_rr:8.50, dth_rr:10.37,pp_w:7, mid_w:3,  dth_w:5},
+  {n:'Sakib Hussain',     t:'GT',  w:15,ov:42.0,r:399,econ:9.50, avg:26.60,sr:16.8,dot:34.1,pp_rr:11.00,mid_rr:9.00, dth_rr:9.08, pp_w:3, mid_w:5,  dth_w:7},
+  {n:'AM Ghazanfar',      t:'GT',  w:15,ov:38.8,r:390,econ:10.04,avg:26.00,sr:15.5,dot:29.6,pp_rr:10.80,mid_rr:9.04, dth_rr:12.69,pp_w:7, mid_w:4,  dth_w:4},
+];
+const LE=9.5;
+BWL.forEach(b=>{
+  const inn=b.ov/4, wpi=b.w/inn;
+  b.bii=+((wpi*(1+(LE-b.econ)/LE)*(b.dot/35))*10).toFixed(2);
+});
+
+const PARTNERS=[
+  {b1:'KL Rahul',b2:'P Nissanka',r:214,bl:95,sr:225.3,t:'DC'},
+  {b1:'Priyansh Arya',b2:'P Simran Singh',r:181,bl:80,sr:226.3,t:'PBKS'},
+  {b1:'B Sai Sudharsan',b2:'Shubman Gill',r:152,bl:74,sr:205.4,t:'GT'},
+  {b1:'RD Rickelton',b2:'RG Sharma',r:145,bl:69,sr:210.1,t:'MI'},
+  {b1:'Priyansh Arya',b2:'P Simran Singh',r:139,bl:76,sr:182.9,t:'PBKS'},
+  {b1:'RD Rickelton',b2:'RG Sharma',r:137,bl:62,sr:221.0,t:'MI'},
+  {b1:'P Simran Singh',b2:'Priyansh Arya',r:133,bl:66,sr:201.5,t:'PBKS'},
+  {b1:'B Sai Sudharsan',b2:'Shubman Gill',r:127,bl:73,sr:174.0,t:'GT'},
+  {b1:'B Sai Sudharsan',b2:'Shubman Gill',r:124,bl:74,sr:167.6,t:'GT'},
+  {b1:'MR Marsh',b2:'JP Inglis',r:123,bl:65,sr:189.2,t:'LSG'},
+  {b1:'TM Head',b2:'Ishan Kishan',r:122,bl:54,sr:225.9,t:'SRH'},
+  {b1:'YBK Jaiswal',b2:'V Suryavanshi',r:121,bl:45,sr:268.9,t:'RR'},
+  {b1:'Q de Kock',b2:'RD Rickelton',r:119,bl:68,sr:175.0,t:'MI'},
+  {b1:'Abhishek Sharma',b2:'TM Head',r:117,bl:48,sr:243.8,t:'SRH'},
+  {b1:'B Sai Sudharsan',b2:'Shubman Gill',r:116,bl:72,sr:161.1,t:'GT'},
+  {b1:'PD Salt',b2:'V Kohli',r:115,bl:63,sr:182.5,t:'RCB'},
+  {b1:'V Kohli',b2:'JG Bethell',r:114,bl:59,sr:193.2,t:'RCB'},
+  {b1:'Abhishek Sharma',b2:'TM Head',r:114,bl:63,sr:181.0,t:'SRH'},
+  {b1:'Priyansh Arya',b2:'P Simran Singh',r:113,bl:37,sr:305.4,t:'PBKS'},
+  {b1:'V Suryavanshi',b2:'Dhruv Jurel',r:112,bl:72,sr:155.6,t:'RR'},
+  {b1:'SV Samson',b2:'RD Gaikwad',r:110,bl:67,sr:164.2,t:'CSK'},
+  {b1:'V Suryavanshi',b2:'YBK Jaiswal',r:108,bl:62,sr:174.2,t:'RR'},
+  {b1:'Abhishek Sharma',b2:'TM Head',r:108,bl:46,sr:234.8,t:'SRH'},
+  {b1:'V Suryavanshi',b2:'YBK Jaiswal',r:108,bl:37,sr:291.9,t:'RR'},
+  {b1:'TM Head',b2:'Ishan Kishan',r:106,bl:48,sr:220.8,t:'SRH'},
+];
+
+const VENUES=[
+  {v:'Sawai Mansingh Stadium, Jaipur',          sh:'Jaipur',  m:4, af:225.5,as:208.0,cp:75, hi:229,lo:152},
+  {v:'HPCA Stadium, Dharamsala',                sh:'Dharm',   m:4, af:221.5,as:195.5,cp:50, hi:254,lo:162},
+  {v:'Wankhede Stadium, Mumbai',                sh:'Wankh',   m:7, af:219.7,as:200.1,cp:57, hi:249,lo:104},
+  {v:'Maharaja YS Intl Stadium, New Chandigarh',sh:'N.Chd',   m:6, af:219.0,as:205.2,cp:67, hi:254,lo:162},
+  {v:'Rajiv Gandhi Intl Stadium, Hyderabad',    sh:'Hyder',   m:7, af:209.0,as:181.3,cp:29, hi:255,lo:156},
+  {v:'M Chinnaswamy Stadium, Bengaluru',        sh:'Bnglr',   m:5, af:195.4,as:188.8,cp:80, hi:250,lo:146},
+  {v:'Eden Gardens, Kolkata',                   sh:'Eden',    m:6, af:193.2,as:172.2,cp:50, hi:247,lo:147},
+  {v:'MA Chidambaram Stadium, Chennai',         sh:'Chepk',   m:7, af:187.6,as:181.4,cp:71, hi:212,lo:158},
+  {v:'Narendra Modi Stadium, Ahmedabad',        sh:'Ahmd',    m:8, af:182.4,as:149.6,cp:50, hi:229,lo:86},
+  {v:'VN Singh Intl Stadium, Raipur',           sh:'Raipur',  m:2, af:179.0,as:180.5,cp:100,hi:194,lo:166},
+  {v:'Ekana Cricket Stadium, Lucknow',          sh:'Lkhnw',   m:7, af:173.0,as:167.9,cp:67, hi:209,lo:119},
+  {v:'Arun Jaitley Stadium, Delhi',             sh:'Delhi',   m:7, af:171.6,as:174.0,cp:86, hi:265,lo:75},
+  {v:'Barsapara Cricket Stadium, Guwahati',     sh:'Guwht',   m:3, af:159.3,as:151.0,cp:67, hi:202,lo:123},
+];
+
+// ════════ TEI COMPUTATION ════════
+const TEI=NRR.map(r=>{
+  const ph=PHASE.find(p=>p.s===r.s);
+  const wp=r.w/r.m;
+  const ct=r.cw+r.cl, dt=r.dw+r.dl;
+  const cr=ct?r.cw/ct:0, dr=dt?r.dw/dt:0;
+  const bc=(ph.bp/LP)*0.30+(ph.bm/LM)*0.35+(ph.bd/LD)*0.35;
+  const be=9.5/((ph.wp+ph.wm+ph.wd)/3);
+  const nn=(r.nrr+1)/2;
+  const tei=+(wp*0.35+nn*0.20+bc*0.20+be*0.15+(cr+dr)/2*0.10).toFixed(4);
+  return {...r,tei:+(tei*100).toFixed(1),bc:+bc.toFixed(3),be:+be.toFixed(3),
+    cr:+(cr*100).toFixed(1),dr:+(dr*100).toFixed(1),
+    rad:{win:+(wp*100).toFixed(1),bat:+(bc*100).toFixed(1),bowl:+(be*100).toFixed(1),
+         pp:+(ph.bp/13*100).toFixed(1),dth:+(ph.bd/14*100).toFixed(1),chase:+(cr*100).toFixed(1)}};
+});
+
+// ════════ HELPERS ════════
+function go(id,btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('on'));
+  document.getElementById('panel-'+id).classList.add('on');
+  btn.classList.add('on');
+}
+const f1=v=>typeof v==='number'?v.toFixed(1):v;
+const f2=v=>typeof v==='number'?v.toFixed(2):v;
+const f0=v=>typeof v==='number'?Math.round(v):v;
+function mkChart(id,cfg){return new Chart(document.getElementById(id),cfg)}
+function hi(v,thr,rev=false){return (rev?(v<thr):(v>thr))?'hi':v<thr-0.5?'lo':'';}
+
+// ════════ OVERVIEW ════════
+function bldNRR(){
+  const rows=[...NRR].sort((a,b)=>b.pts-a.pts||b.nrr-a.nrr);
+  let h=`<tr><th>#</th><th>Team</th><th>M</th><th>W</th><th>L</th><th>NR</th><th>Pts</th>
+    <th>NRR</th><th>Bat RPO</th><th>Bowl RPO</th><th>Chase W</th><th>Chase L</th><th>Def W</th><th>Def L</th></tr>`;
+  rows.forEach((r,i)=>{
+    const q=i<4?'class="q"':'';
+    h+=`<tr ${q}><td style="color:${i<4?'#FF5722':'#555'}">${i+1}</td><td>${r.name}</td>
+      <td>${r.m}</td><td><span class="wp">${r.w}</span></td><td><span class="lp">${r.l}</span></td>
+      <td>${r.nr?`<span class="nrp">${r.nr}</span>`:'-'}</td>
+      <td style="color:#FFD54F;font-weight:700">${r.pts}</td>
+      <td class="${r.nrr>=0?'pos':'neg'}">${r.nrr>=0?'+':''}${r.nrr.toFixed(3)}</td>
+      <td class="pos">${r.rb.toFixed(3)}</td><td class="neg">${r.rw.toFixed(3)}</td>
+      <td style="color:#26C6DA;font-weight:600">${r.cw}</td><td>${r.cl}</td>
+      <td style="color:#AB47BC;font-weight:600">${r.dw}</td><td>${r.dl}</td></tr>`;
+  });
+  document.getElementById('nrr-tbl').innerHTML=h;
+}
+
+function bldSnapshot(){
+  const s=[...NRR].sort((a,b)=>b.nrr-a.nrr);
+  mkChart('rpo-c',{type:'bar',data:{labels:s.map(r=>r.s),datasets:[
+    {label:'Bat RPO',data:s.map(r=>r.rb),backgroundColor:'rgba(255,87,34,.8)',borderRadius:3},
+    {label:'Bowl RPO',data:s.map(r=>r.rw),backgroundColor:'rgba(38,198,218,.7)',borderRadius:3},
+  ]},options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{labels:{color:TC,font:{size:10}}}},
+    scales:{x:{ticks:{color:TC,font:{size:10}},grid:{color:GC}},
+            y:{min:8.5,ticks:{color:TC,font:{size:10}},grid:{color:GC},
+               title:{display:true,text:'Run Rate',color:TC,font:{size:10}}}}}});
+  const sx={CSK:124,DC:117,GT:124,KKR:115,LSG:127,MI:140,PBKS:163,RR:181,RCB:164,SRH:171};
+  const fx={CSK:220,DC:225,GT:292,KKR:192,LSG:209,MI:204,PBKS:219,RR:257,RCB:261,SRH:255};
+  const tk=Object.keys(sx);
+  mkChart('bdry-c',{type:'bar',data:{labels:tk,datasets:[
+    {label:'Fours',data:tk.map(t=>fx[t]),backgroundColor:'rgba(79,195,247,.8)',stack:'s',borderRadius:0},
+    {label:'Sixes',data:tk.map(t=>sx[t]),backgroundColor:'rgba(255,87,34,.85)',stack:'s',borderRadius:3},
+  ]},options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{labels:{color:TC,font:{size:10}}}},
+    scales:{x:{ticks:{color:TC,font:{size:10}},grid:{color:GC}},
+            y:{ticks:{color:TC,font:{size:10}},grid:{color:GC}}}}});
+}
+
+// ════════ PHASE ════════
+function bldPhase(){
+  const lab=PHASE.map(p=>p.s);
+  function bc(id,ds,mn){
+    mkChart(id,{type:'bar',data:{labels:lab,datasets:ds},
+      options:{responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{labels:{color:TC,font:{size:10}}}},
+        scales:{x:{ticks:{color:TC,font:{size:10}},grid:{display:false}},
+                y:{min:mn,ticks:{color:TC,font:{size:10}},grid:{color:GC},
+                   title:{display:true,text:'Run Rate',color:TC,font:{size:10}}}}}});
+  }
+  bc('ph-bat-c',[
+    {label:'Powerplay',data:PHASE.map(p=>p.bp),backgroundColor:'rgba(255,87,34,.85)',borderRadius:3},
+    {label:'Middle',data:PHASE.map(p=>p.bm),backgroundColor:'rgba(79,195,247,.75)',borderRadius:3},
+    {label:'Death',data:PHASE.map(p=>p.bd),backgroundColor:'rgba(255,213,79,.85)',borderRadius:3},
+  ],7.5);
+  bc('ph-bwl-c',[
+    {label:'PP Conceded',data:PHASE.map(p=>p.wp),backgroundColor:'rgba(255,87,34,.6)',borderRadius:3},
+    {label:'Mid Conceded',data:PHASE.map(p=>p.wm),backgroundColor:'rgba(79,195,247,.5)',borderRadius:3},
+    {label:'Death Conceded',data:PHASE.map(p=>p.wd),backgroundColor:'rgba(255,213,79,.6)',borderRadius:3},
+  ],7.5);
+  function wk(id,ds){
+    mkChart(id,{type:'bar',data:{labels:lab,datasets:ds},
+      options:{responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{labels:{color:TC,font:{size:10}}}},
+        scales:{x:{ticks:{color:TC,font:{size:10}},grid:{display:false}},
+                y:{ticks:{color:TC,font:{size:10}},grid:{color:GC}}}}});
+  }
+  wk('ph-wl-c',[
+    {label:'PP',data:PHASE.map(p=>p.ppw),backgroundColor:'rgba(255,87,34,.8)',stack:'s'},
+    {label:'Middle',data:PHASE.map(p=>p.mw),backgroundColor:'rgba(79,195,247,.7)',stack:'s'},
+    {label:'Death',data:PHASE.map(p=>p.dw),backgroundColor:'rgba(255,213,79,.8)',stack:'s'},
+  ]);
+  wk('ph-wt-c',[
+    {label:'PP',data:PHASE.map(p=>p.bppw),backgroundColor:'rgba(171,71,188,.8)',stack:'s'},
+    {label:'Middle',data:PHASE.map(p=>p.bmw),backgroundColor:'rgba(102,187,106,.7)',stack:'s'},
+    {label:'Death',data:PHASE.map(p=>p.bdw),backgroundColor:'rgba(38,198,218,.7)',stack:'s'},
+  ]);
+  let h=`<tr><th>Team</th><th>Bat PP</th><th>Bat Mid</th><th>Bat Dth</th><th>Bwl PP</th><th>Bwl Mid</th><th>Bwl Dth</th>
+    <th>W Lost PP</th><th>W Lost Mid</th><th>W Lost Dth</th><th>W Took PP</th><th>W Took Mid</th><th>W Took Dth</th></tr>`;
+  PHASE.forEach(p=>{
+    h+=`<tr><td>${p.s}</td>
+      <td class="${p.bp>LP?'hi':'lo'}">${p.bp}</td><td class="${p.bm>LM?'hi':'lo'}">${p.bm}</td><td class="${p.bd>LD?'hi':'lo'}">${p.bd}</td>
+      <td class="${p.wp<LP?'hi':'lo'}">${p.wp}</td><td class="${p.wm<LM?'hi':'lo'}">${p.wm}</td><td class="${p.wd<LD?'hi':'lo'}">${p.wd}</td>
+      <td>${p.ppw}</td><td>${p.mw}</td><td>${p.dw}</td><td>${p.bppw}</td><td>${p.bmw}</td><td>${p.bdw}</td></tr>`;
+  });
+  document.getElementById('ph-tbl').innerHTML=h;
+}
+
+// ════════ BATTING ════════
+let bKey='r';
+function bTab(k,btn){bKey=k;document.getElementById('bs-sort').value=k;
+  document.querySelectorAll('#panel-batting .tabs .tab').forEach(t=>t.classList.remove('on'));
+  btn.classList.add('on');rBat();}
+function rBat(){
+  const sort=document.getElementById('bs-sort').value||bKey;
+  const team=document.getElementById('bs-team').value;
+  const minR=parseInt(document.getElementById('bs-min').value)||0;
+  let d=BAT.filter(b=>(!team||b.t===team)&&b.r>=minR);
+  const asc=['econ'].includes(sort);
+  d.sort((a,b)=>asc?a[sort]-b[sort]:b[sort]-a[sort]);
+  const mv=d[0]?Math.abs(d[0][sort]):1;
+  const sub={r:b=>`SR ${b.sr.toFixed(1)}`,sr:b=>`${b.r}r`,avg:b=>`${b.r}r`,
+    bii:b=>`SR ${b.sr.toFixed(1)}`,s6:b=>`SR ${b.sr.toFixed(1)}`,bdry:b=>`${b.r}r`};
+  document.getElementById('bat-list').innerHTML=d.map((b,i)=>{
+    const v=b[sort], pct=Math.min(100,Math.round(Math.abs(v)/mv*100));
+    return `<div class="prow"><span class="prk">${i+1}</span><span class="pnm">${b.n}</span>
+      <span class="ptm">${b.t}</span>
+      <div class="pbr"><div class="pbf" style="width:${pct}%"></div></div>
+      <div style="text-align:right"><div class="pst">${typeof v==='number'?v.toFixed(v>=10?0:2):v}</div>
+      <div class="psb">${sub[sort](b)}</div></div></div>`;
+  }).join('');
+}
+function bldBat(){
+  mkChart('bat-bubble',{type:'bubble',
+    data:{datasets:[{label:'Batters',
+      data:BAT.map(b=>({x:b.avg,y:b.sr,r:Math.max(4,Math.round(b.r/62)),_n:b.n,_t:b.t})),
+      backgroundColor:BAT.map(b=>TCLR[b.t]+'88'),borderColor:BAT.map(b=>TCLR[b.t]),borderWidth:1}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},
+      tooltip:{callbacks:{label:i=>`${BAT[i.dataIndex].n}(${BAT[i.dataIndex].t}): Avg ${i.raw.x}, SR ${i.raw.y}`}}},
+      scales:{x:{min:25,max:62,title:{display:true,text:'Average',color:TC,font:{size:10}},ticks:{color:TC,font:{size:9}},grid:{color:GC}},
+              y:{min:130,max:240,title:{display:true,text:'Strike Rate',color:TC,font:{size:10}},ticks:{color:TC,font:{size:9}},grid:{color:GC}}}}});
+  const top=[...BAT].sort((a,b)=>b.bii-a.bii).slice(0,15);
+  mkChart('bii-c',{type:'bar',data:{labels:top.map(b=>b.n.split(' ').pop()),
+    datasets:[{label:'BII',data:top.map(b=>b.bii),backgroundColor:top.map(b=>TCLR[b.t]+'CC'),borderRadius:4}]},
+    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+      scales:{x:{ticks:{color:TC,font:{size:9}},grid:{color:GC}},y:{ticks:{color:TC,font:{size:9}},grid:{display:false}}}}});
+  let h=`<tr><th>Batter</th><th>Team</th><th>Inn</th><th>Runs</th><th>Balls</th><th>Avg</th><th>SR</th>
+    <th>BII</th><th>4s</th><th>6s</th><th>Dot%</th><th>Bdry%</th>
+    <th>PP Runs</th><th>PP SR</th><th>Mid Runs</th><th>Mid SR</th><th>Dth Runs</th><th>Dth SR</th></tr>`;
+  BAT.forEach(b=>{
+    const ps=b.pp_b?(b.pp_r/b.pp_b*100).toFixed(1):'–';
+    const ms=b.mid_b?(b.mid_r/b.mid_b*100).toFixed(1):'–';
+    const ds=b.dth_b?(b.dth_r/b.dth_b*100).toFixed(1):'–';
+    h+=`<tr><td>${b.n}</td><td>${b.t}</td><td>${b.inn}</td><td class="mi">${b.r}</td><td>${b.b}</td>
+      <td>${b.avg.toFixed(1)}</td><td>${b.sr.toFixed(1)}</td>
+      <td style="color:#FFD54F;font-weight:700">${b.bii}</td>
+      <td>${b.s4}</td><td>${b.s6}</td>
+      <td class="${b.dot>32?'lo':'hi'}">${b.dot}%</td><td>${b.bdry}%</td>
+      <td>${b.pp_r}</td><td>${ps}</td><td>${b.mid_r}</td><td>${ms}</td><td>${b.dth_r}</td><td>${ds}</td></tr>`;
+  });
+  document.getElementById('bat-phase-tbl').innerHTML=h;
+}
+
+// ════════ BOWLING ════════
+let wKey='w';
+function wTab(k,btn){wKey=k;document.getElementById('ws-sort').value=k;
+  document.querySelectorAll('#panel-bowling .tabs .tab').forEach(t=>t.classList.remove('on'));
+  btn.classList.add('on');rBwl();}
+function rBwl(){
+  const sort=document.getElementById('ws-sort').value||wKey;
+  const team=document.getElementById('ws-team').value;
+  let d=BWL.filter(b=>!team||b.t===team);
+  const asc=['econ','avg','sr'].includes(sort);
+  d.sort((a,b)=>asc?a[sort]-b[sort]:b[sort]-a[sort]);
+  const mv=d[0]?Math.abs(d[0][sort]):1;
+  const sub={w:b=>`Econ ${b.econ}`,econ:b=>`${b.w}w`,avg:b=>`${b.w}w`,bii:b=>`${b.w}w`,dot:b=>`${b.w}w`,sr:b=>`${b.w}w`};
+  document.getElementById('bwl-list').innerHTML=d.map((b,i)=>{
+    const v=b[sort], pct=Math.min(100,Math.round(Math.abs(v)/mv*100));
+    const c=asc?'#26C6DA':'#FF5722';
+    return `<div class="prow"><span class="prk">${i+1}</span><span class="pnm">${b.n}</span>
+      <span class="ptm">${b.t}</span>
+      <div class="pbr"><div class="pbf" style="width:${pct}%;background:${c}"></div></div>
+      <div style="text-align:right"><div class="pst" style="color:${c}">${typeof v==='number'?v.toFixed(v>=10?1:2):v}</div>
+      <div class="psb">${sub[sort](b)}</div></div></div>`;
+  }).join('');
+}
+function bldBwl(){
+  mkChart('bwl-sc',{type:'scatter',
+    data:{datasets:[{label:'Bowlers',
+      data:BWL.map((b,i)=>({x:b.econ,y:b.w,_n:b.n,_t:b.t})),
+      backgroundColor:BWL.map(b=>TCLR[b.t]+'AA'),borderColor:BWL.map(b=>TCLR[b.t]),
+      borderWidth:1,pointRadius:7,pointHoverRadius:9}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},
+      tooltip:{callbacks:{label:i=>`${BWL[i.dataIndex].n}: ${i.raw.y}w @ ${i.raw.x} econ`}}},
+      scales:{x:{min:6,max:11,title:{display:true,text:'Economy',color:TC,font:{size:10}},ticks:{color:TC,font:{size:9}},grid:{color:GC}},
+              y:{title:{display:true,text:'Wickets',color:TC,font:{size:10}},ticks:{color:TC,font:{size:9}},grid:{color:GC}}}}});
+  const top=[...BWL].sort((a,b)=>b.bii-a.bii).slice(0,14);
+  mkChart('bii2-c',{type:'bar',data:{labels:top.map(b=>b.n.split(' ').pop()),
+    datasets:[{label:'BowlII',data:top.map(b=>b.bii),backgroundColor:top.map(b=>TCLR[b.t]+'CC'),borderRadius:4}]},
+    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+      scales:{x:{ticks:{color:TC,font:{size:9}},grid:{color:GC}},y:{ticks:{color:TC,font:{size:9}},grid:{display:false}}}}});
+  let h=`<tr><th>Bowler</th><th>Team</th><th>Overs</th><th>Wkts</th><th>Runs</th><th>Econ</th>
+    <th>Avg</th><th>SR</th><th>BowlII</th><th>Dot%</th><th>PP RR</th><th>Mid RR</th><th>Dth RR</th>
+    <th>PP W</th><th>Mid W</th><th>Dth W</th></tr>`;
+  BWL.forEach(b=>{
+    h+=`<tr><td>${b.n}</td><td>${b.t}</td><td>${b.ov}</td><td class="mi">${b.w}</td><td>${b.r}</td>
+      <td class="${b.econ<9?'hi':b.econ>10.5?'lo':''}">${b.econ}</td>
+      <td>${b.avg.toFixed(1)}</td><td>${b.sr.toFixed(1)}</td>
+      <td style="color:#FFD54F;font-weight:700">${b.bii}</td>
+      <td class="${b.dot>40?'hi':b.dot<30?'lo':''}">${b.dot}%</td>
+      <td class="${b.pp_rr<9.5?'hi':b.pp_rr>11?'lo':''}">${b.pp_rr}</td>
+      <td class="${b.mid_rr<9?'hi':b.mid_rr>11?'lo':''}">${b.mid_rr}</td>
+      <td class="${b.dth_rr<9.5?'hi':b.dth_rr>11?'lo':''}">${b.dth_rr}</td>
+      <td>${b.pp_w}</td><td>${b.mid_w}</td><td>${b.dth_w}</td></tr>`;
+  });
+  document.getElementById('bwl-pvt').innerHTML=h;
+}
+
+// ════════ CHASE / DEFEND ════════
+function bldCD(){
+  const d=NRR;
+  mkChart('cd-c',{type:'bar',data:{labels:d.map(r=>r.s),datasets:[
+    {label:'Chase Win%',data:d.map(r=>+((r.cw/(r.cw+r.cl||1))*100).toFixed(1)),backgroundColor:'rgba(38,198,218,.8)',borderRadius:3},
+    {label:'Defend Win%',data:d.map(r=>+((r.dw/(r.dw+r.dl||1))*100).toFixed(1)),backgroundColor:'rgba(171,71,188,.8)',borderRadius:3},
+  ]},options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{labels:{color:TC,font:{size:10}}}},
+    scales:{x:{ticks:{color:TC,font:{size:10}},grid:{display:false}},
+            y:{min:0,max:100,ticks:{color:TC,font:{size:10}},grid:{color:GC},
+               title:{display:true,text:'Win %',color:TC,font:{size:10}}}}}});
+  document.getElementById('cd-cards').innerHTML=d.map(r=>{
+    const cp=+(r.cw/(r.cw+r.cl||1)*100).toFixed(0), dp=+(r.dw/(r.dw+r.dl||1)*100).toFixed(0);
+    return `<div class="cd-card">
+      <div class="cd-team">${r.s}</div>
+      <div class="cd-boxes">
+        <div class="cd-b c"><div class="cv">${r.cw}/${r.cw+r.cl}</div><div class="cl">Chase</div><div style="font-size:11px;color:#26C6DA;font-weight:700">${cp}%</div></div>
+        <div class="cd-b d"><div class="cv">${r.dw}/${r.dw+r.dl}</div><div class="cl">Defend</div><div style="font-size:11px;color:#AB47BC;font-weight:700">${dp}%</div></div>
+      </div>
+      <div class="cd-bars">
+        <div class="cd-bar" style="background:#26C6DA;width:${cp}%"></div>
+        <div class="cd-bar" style="background:#AB47BC;width:${dp}%"></div>
+      </div>
+    </div>`;
+  }).join('');
+  let h=`<tr><th>Team</th><th>Chase W</th><th>Chase L</th><th>Chase Win%</th>
+    <th>Defend W</th><th>Defend L</th><th>Defend Win%</th><th>Overall Win%</th><th>Pts</th><th>NRR</th></tr>`;
+  d.forEach(r=>{
+    const cp=+(r.cw/(r.cw+r.cl||1)*100).toFixed(1), dp=+(r.dw/(r.dw+r.dl||1)*100).toFixed(1);
+    h+=`<tr><td>${r.s}</td><td style="color:#26C6DA">${r.cw}</td><td>${r.cl}</td>
+      <td class="${cp>=60?'hi':cp<=40?'lo':''}">${cp}%</td>
+      <td style="color:#AB47BC">${r.dw}</td><td>${r.dl}</td>
+      <td class="${dp>=60?'hi':dp<=40?'lo':''}">${dp}%</td>
+      <td class="${r.w/r.m>=.6?'hi':r.w/r.m<=.4?'lo':''}">${(r.w/r.m*100).toFixed(1)}%</td>
+      <td style="color:#FFD54F;font-weight:700">${r.pts}</td>
+      <td class="${r.nrr>=0?'pos':'neg'}">${r.nrr>=0?'+':''}${r.nrr.toFixed(3)}</td></tr>`;
+  });
+  document.getElementById('cd-tbl').innerHTML=h;
+}
+
+// ════════ PARTNERSHIPS ════════
+function rPs(){
+  const team=document.getElementById('ps-team').value;
+  const sort=document.getElementById('ps-sort').value;
+  let d=PARTNERS.filter(p=>!team||p.t===team);
+  d.sort((a,b)=>b[sort]-a[sort]);
+  const mx=d[0]?.r||1;
+  document.getElementById('ps-list').innerHTML=d.map((p,i)=>`<div class="pship">
+    <span style="font-size:10px;color:#555;width:18px;text-align:right;flex-shrink:0">${i+1}</span>
+    <div class="psn" style="flex:1;min-width:0"><b>${p.b1}</b> &amp; <b>${p.b2}</b></div>
+    <span class="ptag">${p.t}</span>
+    <div class="psbr"><div class="psbf" style="width:${Math.round(p.r/mx*100)}%"></div></div>
+    <div class="psr">${p.r}</div>
+    <div class="pss">SR ${p.sr}<br>${p.bl}b</div>
+  </div>`).join('');
+}
+function bldPs(){
+  const top=[...PARTNERS].sort((a,b)=>b.r-a.r).slice(0,12);
+  mkChart('ps-bar',{type:'bar',data:{labels:top.map(p=>`${p.b1.split(' ').pop()}&${p.b2.split(' ').pop()}`),
+    datasets:[{label:'Runs',data:top.map(p=>p.r),backgroundColor:top.map(p=>TCLR[p.t]+'BB'),borderRadius:4}]},
+    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+      scales:{x:{ticks:{color:TC,font:{size:9}},grid:{color:GC}},y:{ticks:{color:TC,font:{size:8}},grid:{display:false}}}}});
+  const topSR=[...PARTNERS].filter(p=>p.r>=50).sort((a,b)=>b.sr-a.sr).slice(0,10);
+  mkChart('ps-sr',{type:'bar',data:{labels:topSR.map(p=>`${p.b1.split(' ').pop()}&${p.b2.split(' ').pop()}`),
+    datasets:[{label:'SR',data:topSR.map(p=>p.sr),backgroundColor:topSR.map(p=>TCLR[p.t]+'BB'),borderRadius:4}]},
+    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+      scales:{x:{min:100,ticks:{color:TC,font:{size:9}},grid:{color:GC}},y:{ticks:{color:TC,font:{size:8}},grid:{display:false}}}}});
+}
+
+// ════════ VENUE ════════
+function bldVenue(){
+  const s=[...VENUES].sort((a,b)=>b.af-a.af);
+  mkChart('ven-c',{type:'bar',data:{labels:s.map(v=>v.sh),datasets:[
+    {label:'1st Innings Avg',data:s.map(v=>v.af),backgroundColor:'rgba(255,87,34,.8)',borderRadius:3},
+    {label:'2nd Innings Avg',data:s.map(v=>v.as),backgroundColor:'rgba(38,198,218,.7)',borderRadius:3},
+  ]},options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{labels:{color:TC,font:{size:10}}}},
+    scales:{x:{ticks:{color:TC,font:{size:10}},grid:{color:GC}},
+            y:{min:120,ticks:{color:TC,font:{size:10}},grid:{color:GC}}}}});
+  document.getElementById('ven-cards').innerHTML=s.map(v=>{
+    const c=v.cp>=70?'#66BB6A':v.cp<=40?'#EF5350':'#FFD54F';
+    return `<div class="vcard">
+      <div class="vname">${v.v}</div>
+      <div class="vstats">
+        <div class="vs"><div class="vv">${v.af.toFixed(0)}</div><div class="vl">1st Avg</div></div>
+        <div class="vs"><div class="vv">${v.as.toFixed(0)}</div><div class="vl">2nd Avg</div></div>
+        <div class="vs"><div class="vv" style="color:${c}">${v.cp}%</div><div class="vl">Chase%</div></div>
+        <div class="vs"><div class="vv" style="color:#AB47BC">${v.hi}</div><div class="vl">Highest</div></div>
+      </div>
+      <div class="vbar"><div class="vbarf" style="width:${v.cp}%;background:${c}"></div></div>
+    </div>`;
+  }).join('');
+  let h=`<tr><th>Venue</th><th>M</th><th>1st Avg</th><th>2nd Avg</th><th>1v2 Diff</th>
+    <th>Chase Win%</th><th>Highest</th><th>Lowest</th></tr>`;
+  s.forEach(v=>{
+    const d=(v.af-v.as).toFixed(1);
+    h+=`<tr><td>${v.v}</td><td>${v.m}</td><td class="hi">${v.af.toFixed(1)}</td><td>${v.as.toFixed(1)}</td>
+      <td class="${parseFloat(d)>10?'lo':'hi'}">${parseFloat(d)>0?'+':''}${d}</td>
+      <td class="${v.cp>=70?'hi':v.cp<=40?'lo':''}">${v.cp}%</td>
+      <td class="mi">${v.hi}</td><td class="lo">${v.lo}</td></tr>`;
+  });
+  document.getElementById('ven-tbl').innerHTML=h;
+}
+
+// ════════ TEI & RADAR ════════
+let radChart=null;
+function bldTEI(){
+  const s=[...TEI].sort((a,b)=>b.tei-a.tei);
+  mkChart('tei-bar',{type:'bar',data:{labels:s.map(t=>t.s),
+    datasets:[{label:'TEI',data:s.map(t=>t.tei),backgroundColor:s.map(t=>TCLR[t.s]+'CC'),borderRadius:4}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+      scales:{x:{ticks:{color:TC,font:{size:10}},grid:{display:false}},
+              y:{min:40,ticks:{color:TC,font:{size:10}},grid:{color:GC},
+                 title:{display:true,text:'TEI Score',color:TC,font:{size:10}}}}}});
+  mkChart('tei-stk',{type:'bar',data:{labels:s.map(t=>t.s),datasets:[
+    {label:'Win% (35%)',data:s.map(t=>+(t.w/t.m*0.35*100).toFixed(1)),backgroundColor:'rgba(255,87,34,.8)',stack:'s'},
+    {label:'NRR (20%)',data:s.map(t=>+((t.nrr+1)/2*0.20*100).toFixed(1)),backgroundColor:'rgba(38,198,218,.7)',stack:'s'},
+    {label:'Bat Phase (20%)',data:s.map(t=>+(t.bc*0.20*100).toFixed(1)),backgroundColor:'rgba(255,213,79,.75)',stack:'s'},
+    {label:'Bowl Eff (15%)',data:s.map(t=>+(t.be*0.15*100).toFixed(1)),backgroundColor:'rgba(171,71,188,.7)',stack:'s'},
+    {label:'Chase+Def (10%)',data:s.map(t=>{const cr=t.cw/(t.cw+t.cl||1),dr=t.dw/(t.dw+t.dl||1);return +((cr+dr)/2*0.10*100).toFixed(1);}),backgroundColor:'rgba(102,187,106,.7)',stack:'s'},
+  ]},options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{labels:{color:TC,font:{size:9}}}},
+    scales:{x:{ticks:{color:TC,font:{size:10}},grid:{display:false}},
+            y:{ticks:{color:TC,font:{size:10}},grid:{color:GC}}}}});
+  // TEI cards
+  document.getElementById('tei-cards').innerHTML=s.map(t=>`<div class="card">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;color:${TCLR[t.s]}">${t.s}</div>
+      <div style="font-size:11px;color:#777;flex:1">${t.name}</div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:900;color:#FFD54F">${t.tei}</div>
+    </div>
+    ${[['Win Rate',(t.w/t.m*100).toFixed(0)+'%','#FF5722',t.w/t.m*100],
+       ['NRR',(t.nrr>=0?'+':'')+t.nrr.toFixed(3),'#26C6DA',Math.min(100,(t.nrr+1)/2*100)],
+       ['Bat Composite',(t.bc*100).toFixed(1),'#FFD54F',t.bc*100],
+       ['Bowl Efficiency',(t.be*100).toFixed(1),'#AB47BC',t.be*100],
+       ['Chase Win%',t.cr+'%','#66BB6A',+t.cr],
+       ['Defend Win%',t.dr+'%','#4FC3F7',+t.dr]].map(([l,v,c,p])=>`
+      <div style="display:flex;align-items:center;gap:6px;font-size:10px;color:#777;margin-bottom:4px">
+        <span style="width:90px;flex-shrink:0">${l}</span>
+        <div style="flex:1;background:rgba(255,255,255,.06);border-radius:2px;height:4px">
+          <div style="width:${Math.min(100,Math.max(0,parseFloat(p)))}%;height:4px;border-radius:2px;background:${c}"></div>
+        </div>
+        <span style="min-width:42px;text-align:right;color:#ccc;font-weight:600">${v}</span>
+      </div>`).join('')}
+  </div>`).join('');
+  drawRadar();
+}
+
+function drawRadar(){
+  const a=document.getElementById('ra').value, b=document.getElementById('rb').value;
+  const ta=TEI.find(t=>t.s===a), tb=TEI.find(t=>t.s===b);
+  if(!ta||!tb) return;
+  const labels=['Win Rate','Bat Composite','Bowl Efficiency','PP Batting','Death Batting','Chase Rate'];
+  const norm=(v,lo,hi)=>Math.max(0,Math.min(100,(parseFloat(v)-lo)/(hi-lo)*100));
+  const da=[norm(ta.rad.win,25,80),norm(ta.rad.bat,90,115),norm(ta.rad.bowl,90,106),norm(ta.rad.pp,60,95),norm(ta.rad.dth,70,98),norm(ta.rad.chase,20,90)];
+  const db=[norm(tb.rad.win,25,80),norm(tb.rad.bat,90,115),norm(tb.rad.bowl,90,106),norm(tb.rad.pp,60,95),norm(tb.rad.dth,70,98),norm(tb.rad.chase,20,90)];
+  if(radChart) radChart.destroy();
+  document.getElementById('rad-title').textContent=`${a} vs ${b} — Radar`;
+  radChart=mkChart('rad-c',{type:'radar',data:{labels,datasets:[
+    {label:a,data:da,borderColor:TCLR[a],backgroundColor:TCLR[a]+'28',borderWidth:2,pointBackgroundColor:TCLR[a],pointRadius:4},
+    {label:b,data:db,borderColor:TCLR[b],backgroundColor:TCLR[b]+'28',borderWidth:2,pointBackgroundColor:TCLR[b],pointRadius:4},
+  ]},options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{labels:{color:TC,font:{size:11}}}},
+    scales:{r:{min:0,max:100,ticks:{color:TC,font:{size:8},stepSize:25,backdropColor:'transparent'},
+               grid:{color:GC},angleLines:{color:GC},pointLabels:{color:TC,font:{size:10}}}}}});
+  const rows=[['Win Rate',da[0],db[0],ta.rad.win+'%',tb.rad.win+'%'],
+              ['Bat Composite',da[1],db[1],ta.rad.bat,tb.rad.bat],
+              ['Bowl Efficiency',da[2],db[2],ta.rad.bowl,tb.rad.bowl],
+              ['PP Batting',da[3],db[3],ta.rad.pp,tb.rad.pp],
+              ['Death Batting',da[4],db[4],ta.rad.dth,tb.rad.dth],
+              ['Chase Rate',da[5],db[5],ta.rad.chase+'%',tb.rad.chase+'%']];
+  let h=`<tr><th>Metric</th><th>${a} (norm)</th><th>${b} (norm)</th><th>${a} raw</th><th>${b} raw</th></tr>`;
+  rows.forEach(([l,va,vb,ra,rb])=>{
+    const aw=va>vb, bw=vb>va;
+    h+=`<tr><td>${l}</td><td class="${aw?'hi':''}">${va.toFixed(1)}</td><td class="${bw?'hi':''}">${vb.toFixed(1)}</td>
+      <td>${ra}</td><td>${rb}</td></tr>`;
+  });
+  document.getElementById('rad-src').innerHTML=h;
+}
+
+// ════════ PIVOT TABLES ════════
+const PVTS={
+  bat:{cols:['Batter','Team','Inn','Runs','Balls','Avg','SR','BII','4s','6s','Dot%','Bdry%','PP_R','PP_SR','Mid_R','Mid_SR','Dth_R','Dth_SR'],
+    get:d=>d.map(b=>[b.n,b.t,b.inn,b.r,b.b,b.avg.toFixed(1),b.sr.toFixed(1),b.bii,b.s4,b.s6,b.dot,b.bdry,b.pp_r,b.pp_b?(b.pp_r/b.pp_b*100).toFixed(1):'–',b.mid_r,b.mid_b?(b.mid_r/b.mid_b*100).toFixed(1):'–',b.dth_r,b.dth_b?(b.dth_r/b.dth_b*100).toFixed(1):'–']),
+    data:BAT,tk:'t',sk:'n'},
+  bwl:{cols:['Bowler','Team','Overs','Wkts','Runs','Econ','Avg','SR','BowlII','Dot%','PP_RR','Mid_RR','Dth_RR','PP_W','Mid_W','Dth_W'],
+    get:d=>d.map(b=>[b.n,b.t,b.ov,b.w,b.r,b.econ,b.avg.toFixed(1),b.sr.toFixed(1),b.bii,b.dot,b.pp_rr,b.mid_rr,b.dth_rr,b.pp_w,b.mid_w,b.dth_w]),
+    data:BWL,tk:'t',sk:'n'},
+  team:{cols:['Team','Full Name','M','W','L','NR','Pts','NRR','Bat_RPO','Bowl_RPO','Chase_W','Chase_L','Chase%','Def_W','Def_L','Def%'],
+    get:d=>d.map(r=>[r.s,r.name,r.m,r.w,r.l,r.nr,r.pts,r.nrr.toFixed(3),r.rb.toFixed(3),r.rw.toFixed(3),r.cw,r.cl,(r.cw/(r.cw+r.cl||1)*100).toFixed(1)+'%',r.dw,r.dl,(r.dw/(r.dw+r.dl||1)*100).toFixed(1)+'%']),
+    data:NRR,tk:'s',sk:'s'},
+  phase:{cols:['Team','Bat_PP','Bat_Mid','Bat_Dth','Bwl_PP','Bwl_Mid','Bwl_Dth','WL_PP','WL_Mid','WL_Dth','WT_PP','WT_Mid','WT_Dth'],
+    get:d=>d.map(p=>[p.s,p.bp,p.bm,p.bd,p.wp,p.wm,p.wd,p.ppw,p.mw,p.dw,p.bppw,p.bmw,p.bdw]),
+    data:PHASE,tk:'s',sk:'s'},
+  venue:{cols:['Venue','Matches','1st_Avg','2nd_Avg','Diff','Chase_Win%','Highest','Lowest'],
+    get:d=>d.map(v=>[v.v,v.m,v.af.toFixed(1),v.as.toFixed(1),(v.af-v.as).toFixed(1),v.cp+'%',v.hi,v.lo]),
+    data:VENUES,tk:null,sk:'v'},
+  ps:{cols:['Batter 1','Batter 2','Team','Runs','Balls','Strike Rate'],
+    get:d=>d.map(p=>[p.b1,p.b2,p.t,p.r,p.bl,p.sr]),
+    data:PARTNERS,tk:'t',sk:'b1'},
+};
+let pvtSort={col:null,asc:false};
+function rPivot(){
+  const sel=document.getElementById('pv-sel').value;
+  const team=document.getElementById('pv-team').value;
+  const q=document.getElementById('pv-q').value.toLowerCase();
+  const cfg=PVTS[sel];
+  let d=[...cfg.data];
+  if(team&&cfg.tk) d=d.filter(r=>r[cfg.tk]===team);
+  if(q&&cfg.sk) d=d.filter(r=>{
+    const v=String(r[cfg.sk]||'').toLowerCase();
+    return v.includes(q)||(r.t||r.s||'').toLowerCase().includes(q)||(r.n||'').toLowerCase().includes(q);
+  });
+  const rows=cfg.get(d);
+  let h=`<thead><tr>${cfg.cols.map((c,i)=>`<th onclick="sortPvt(${i})">${c} ${pvtSort.col===i?(pvtSort.asc?'↑':'↓'):''}</th>`).join('')}</tr></thead>`;
+  h+=`<tbody>${rows.map(row=>`<tr>${row.map(v=>`<td>${v??'–'}</td>`).join('')}</tr>`).join('')}</tbody>`;
+  document.getElementById('pv-tbl').innerHTML=h;
+}
+function sortPvt(col){
+  pvtSort.asc=pvtSort.col===col?!pvtSort.asc:false;
+  pvtSort.col=col;
+  rPivot();
+}
+
+
+function bldTEIBreakdown(){
+  const s=[...TEI].sort((a,b)=>b.tei-a.tei);
+  const el=document.getElementById('tei-breakdown-tbl');
+  if(!el) return;
+  el.innerHTML=s.map((t,i)=>{
+    const ph=PHASE.find(p=>p.s===t.s);
+    const wp=t.w/t.m;
+    const nn=(t.nrr+1)/2;
+    const ct=t.cw+t.cl, dt=t.dw+t.dl;
+    const cr=ct?t.cw/ct:0, dr=dt?t.dw/dt:0;
+    const cd=(cr+dr)/2;
+    const c1=(wp*0.35*100).toFixed(1);
+    const c2=(nn*0.20*100).toFixed(1);
+    const c3=(t.bc*0.20*100).toFixed(1);
+    const c4=(t.be*0.15*100).toFixed(1);
+    const c5=(cd*0.10*100).toFixed(1);
+    return `<tr style="border-bottom:.5px solid rgba(255,255,255,.04)">
+      <td style="padding:5px 8px;font-weight:700;color:${TCLR[t.s]}">${t.s}</td>
+      <td style="padding:5px 8px;text-align:right;color:#FF5722">${c1}</td>
+      <td style="padding:5px 8px;text-align:right;color:#26C6DA">${c2}</td>
+      <td style="padding:5px 8px;text-align:right;color:#FFD54F">${c3}</td>
+      <td style="padding:5px 8px;text-align:right;color:#AB47BC">${c4}</td>
+      <td style="padding:5px 8px;text-align:right;color:#66BB6A">${c5}</td>
+      <td style="padding:5px 8px;text-align:right;font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:900;color:#FFD54F">${t.tei}</td>
+    </tr>`;
+  }).join('');
+}
+
+// ════════ INIT ════════
+document.addEventListener('DOMContentLoaded',()=>{
+  bldNRR(); bldSnapshot();
+  bldPhase();
+  bldBat(); rBat();
+  bldBwl(); rBwl();
+  bldCD();
+  bldPs(); rPs();
+  bldVenue();
+  bldTEI();
+  bldTEIBreakdown();
+  rPivot();
+});
+</script>
+</body>
+</html>
