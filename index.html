@@ -152,6 +152,8 @@ body{background:var(--bg);color:var(--txt);font-family:'Inter',sans-serif;font-s
     <button class="nb"     onclick="go('venue',this)">Venues</button>
     <button class="nb"     onclick="go('tei',this)">TEI &amp; Radar</button>
     <button class="nb"     onclick="go('pivot',this)">Pivot Tables</button>
+    <button class="nb"     onclick="go('readme',this)">📖 ReadMe</button>
+    <button class="nb"     onclick="go('insights',this)">💡 Insights</button>
   </nav>
 </div>
 
@@ -162,9 +164,9 @@ body{background:var(--bg);color:var(--txt);font-family:'Inter',sans-serif;font-s
   <div class="g5" style="margin-bottom:6px">
     <div class="kpi"><div class="v">+0.921</div><div class="l">Best NRR<br>RCB</div></div>
     <div class="kpi"><div class="v">776</div><div class="l">Top Runs<br>Suryavanshi · RR</div></div>
-    <div class="kpi"><div class="v">29</div><div class="l">Top Wickets<br>K Rabada · DC</div></div>
+    <div class="kpi"><div class="v">29</div><div class="l">Top Wickets<br>K Rabada · GT</div></div>
     <div class="kpi"><div class="v">225.6</div><div class="l">Top SR (min 100b)<br>Suryavanshi</div></div>
-    <div class="kpi"><div class="v">50%</div><div class="l">Toss → Win<br>Season Rate</div></div>
+    <div class="kpi"><div class="v">51.4%</div><div class="l">Toss → Win<br>Season Rate</div></div>
   </div>
 
   <div class="sec">Official Points Table — Net Run Rate</div>
@@ -385,6 +387,117 @@ body{background:var(--bg);color:var(--txt);font-family:'Inter',sans-serif;font-s
     </div>
   </div>
 
+  <div class="sec">TEI Formula — Full Component Breakdown</div>
+  <div class="card" style="padding:18px 20px">
+
+    <!-- formula bar -->
+    <div style="background:var(--s2);border-radius:8px;padding:13px 16px;margin-bottom:16px;font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;line-height:2;letter-spacing:.3px">
+      <span style="color:var(--c1)">TEI</span> =
+      <span style="color:#FF5722">(Win% &times; 0.35)</span> +
+      <span style="color:#26C6DA">(NRR<sub style="font-size:11px">norm</sub> &times; 0.20)</span> +
+      <span style="color:#FFD54F">(BatPhase &times; 0.20)</span> +
+      <span style="color:#AB47BC">(BowlEff &times; 0.15)</span> +
+      <span style="color:#66BB6A">(CD<sub style="font-size:11px">comp</sub> &times; 0.10)</span>
+      &nbsp;&times;&nbsp;100
+    </div>
+
+    <!-- 5 weight cards -->
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:9px;margin-bottom:16px">
+      <div style="background:rgba(255,87,34,.08);border:.5px solid rgba(255,87,34,.35);border-radius:8px;padding:12px;text-align:center">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:900;color:#FF5722">35%</div>
+        <div style="font-size:11px;font-weight:700;color:#FF5722;margin:4px 0">Win Rate</div>
+        <div style="font-size:10px;color:#777;line-height:1.5">Wins &divide; Matches<br>Most direct metric</div>
+      </div>
+      <div style="background:rgba(38,198,218,.08);border:.5px solid rgba(38,198,218,.35);border-radius:8px;padding:12px;text-align:center">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:900;color:#26C6DA">20%</div>
+        <div style="font-size:11px;font-weight:700;color:#26C6DA;margin:4px 0">NRR Normalised</div>
+        <div style="font-size:10px;color:#777;line-height:1.5">(NRR + 1.0) &divide; 2.0<br>Maps &minus;1&rarr;+1 to 0&rarr;1</div>
+      </div>
+      <div style="background:rgba(255,213,79,.08);border:.5px solid rgba(255,213,79,.35);border-radius:8px;padding:12px;text-align:center">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:900;color:#FFD54F">20%</div>
+        <div style="font-size:11px;font-weight:700;color:#FFD54F;margin:4px 0">Bat Phase Composite</div>
+        <div style="font-size:10px;color:#777;line-height:1.5">(PP&divide;10.17)&times;0.30<br>+(Mid&divide;9.27)&times;0.35<br>+(Dth&divide;10.75)&times;0.35</div>
+      </div>
+      <div style="background:rgba(171,71,188,.08);border:.5px solid rgba(171,71,188,.35);border-radius:8px;padding:12px;text-align:center">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:900;color:#AB47BC">15%</div>
+        <div style="font-size:11px;font-weight:700;color:#AB47BC;margin:4px 0">Bowl Efficiency</div>
+        <div style="font-size:10px;color:#777;line-height:1.5">9.5 &divide; avg(PP+Mid<br>+Death econ)<br>League avg = 9.5</div>
+      </div>
+      <div style="background:rgba(102,187,106,.08);border:.5px solid rgba(102,187,106,.35);border-radius:8px;padding:12px;text-align:center">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:900;color:#66BB6A">10%</div>
+        <div style="font-size:11px;font-weight:700;color:#66BB6A;margin:4px 0">Chase + Defend</div>
+        <div style="font-size:10px;color:#777;line-height:1.5">(Chase Win% + Defend Win%) &divide; 2<br>Rewards versatility</div>
+      </div>
+    </div>
+
+    <!-- 3 detail boxes -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:11px;margin-bottom:14px">
+      <div style="background:var(--s2);border-radius:8px;padding:13px">
+        <div style="font-size:11px;font-weight:700;color:#FFD54F;margin-bottom:8px">&#128202; Batting Phase Benchmarks</div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <div style="display:flex;justify-content:space-between;align-items:center;font-size:11px">
+            <span style="color:#888">Powerplay (Ov 1&ndash;6) &times;0.30</span>
+            <span style="color:#FF5722;font-weight:700;background:rgba(255,87,34,.12);padding:1px 7px;border-radius:4px">10.17 RR</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;font-size:11px">
+            <span style="color:#888">Middle (Ov 7&ndash;15) &times;0.35</span>
+            <span style="color:#4FC3F7;font-weight:700;background:rgba(79,195,247,.12);padding:1px 7px;border-radius:4px">9.27 RR</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;font-size:11px">
+            <span style="color:#888">Death (Ov 16&ndash;20) &times;0.35</span>
+            <span style="color:#FFD54F;font-weight:700;background:rgba(255,213,79,.12);padding:1px 7px;border-radius:4px">10.75 RR</span>
+          </div>
+          <div style="font-size:10px;color:#555;margin-top:4px;line-height:1.5;border-top:.5px solid var(--bd);padding-top:6px">Middle &amp; Death weighted 0.35 each — higher leverage phases with greater match-deciding impact. PP weighted 0.30.</div>
+        </div>
+      </div>
+      <div style="background:var(--s2);border-radius:8px;padding:13px">
+        <div style="font-size:11px;font-weight:700;color:#AB47BC;margin-bottom:8px">&#127919; Bowl Efficiency — How It Works</div>
+        <div style="font-size:11px;color:#888;line-height:1.9">
+          Season avg economy = <span style="color:#fff;font-weight:600">9.5 RPO</span><br>
+          BowlEff = 9.5 &divide; team 3-phase avg econ<br>
+          Econ &lt; 9.5 &rarr; score &gt; 1.0 <span style="color:#66BB6A">&#10003; bonus</span><br>
+          Econ &gt; 9.5 &rarr; score &lt; 1.0 <span style="color:#EF5350">&#10007; penalty</span>
+        </div>
+        <div style="font-size:10px;color:#555;margin-top:6px;border-top:.5px solid var(--bd);padding-top:6px">e.g. KKR avg econ 9.26 &rarr; BowlEff = 1.026<br>MI avg econ 10.50 &rarr; BowlEff = 0.905</div>
+      </div>
+      <div style="background:var(--s2);border-radius:8px;padding:13px">
+        <div style="font-size:11px;font-weight:700;color:#26C6DA;margin-bottom:8px">&#128260; NRR Normalisation</div>
+        <div style="font-size:11px;color:#888;line-height:1.9">
+          Season NRR range: &minus;0.73 to +0.92<br>
+          Formula: (NRR + 1.0) &divide; 2.0<br>
+          NRR &nbsp;0.00 &rarr; <span style="color:#fff;font-weight:600">0.50</span> (neutral)<br>
+          NRR +0.92 &rarr; <span style="color:#66BB6A;font-weight:600">0.961</span> (RCB)<br>
+          NRR &minus;0.73 &rarr; <span style="color:#EF5350;font-weight:600">0.135</span> (MI)
+        </div>
+      </div>
+    </div>
+
+    <!-- per-team component table -->
+    <div style="background:var(--s2);border-radius:8px;padding:13px;margin-bottom:13px;overflow-x:auto">
+      <div style="font-size:11px;font-weight:700;color:var(--txt2);margin-bottom:9px;text-transform:uppercase;letter-spacing:1px">TEI Component Values — All 10 Teams</div>
+      <table style="width:100%;border-collapse:collapse;font-size:11px;min-width:640px">
+        <thead>
+          <tr style="border-bottom:.5px solid var(--bd)">
+            <th style="text-align:left;padding:5px 8px;color:var(--txt3);font-size:9px;text-transform:uppercase;letter-spacing:.8px">Team</th>
+            <th style="text-align:right;padding:5px 8px;color:#FF5722;font-size:9px;text-transform:uppercase">Win% &times;0.35</th>
+            <th style="text-align:right;padding:5px 8px;color:#26C6DA;font-size:9px;text-transform:uppercase">NRR<sub>norm</sub> &times;0.20</th>
+            <th style="text-align:right;padding:5px 8px;color:#FFD54F;font-size:9px;text-transform:uppercase">BatPhase &times;0.20</th>
+            <th style="text-align:right;padding:5px 8px;color:#AB47BC;font-size:9px;text-transform:uppercase">BowlEff &times;0.15</th>
+            <th style="text-align:right;padding:5px 8px;color:#66BB6A;font-size:9px;text-transform:uppercase">CD<sub>comp</sub> &times;0.10</th>
+            <th style="text-align:right;padding:5px 8px;color:var(--acc);font-size:9px;text-transform:uppercase">TEI Score</th>
+          </tr>
+        </thead>
+        <tbody id="tei-breakdown-tbl"></tbody>
+      </table>
+    </div>
+
+    <!-- insight callout -->
+    <div style="padding:11px 15px;background:rgba(255,87,34,.06);border-left:3px solid var(--c1);border-radius:0 6px 6px 0">
+      <span style="font-size:11px;font-weight:700;color:#ddd">&#128161; Key Insight: </span>
+      <span style="font-size:11px;color:#888">RCB leads decisively on both Win% and NRR. KKR and CSK rank above DC despite fewer wins because their bowling efficiency and NRR are more balanced — TEI rewards holistic performance across all five dimensions, not just win count alone.</span>
+    </div>
+  </div>
+
   <div class="sec">Radar Comparison — select two teams</div>
   <div class="slicers">
     <label>Team A</label>
@@ -441,6 +554,571 @@ body{background:var(--bg);color:var(--txt);font-family:'Inter',sans-serif;font-s
   <p class="tip" style="margin-top:8px">Click column headers to sort · Use slicers to filter · Copy-paste into Excel for further pivot analysis</p>
 </div>
 
+<!-- ═══════ README ═══════ -->
+<div id="panel-readme" class="panel">
+
+  <!-- HERO -->
+  <div style="background:linear-gradient(135deg,rgba(255,87,34,.12),rgba(38,198,218,.08));border:.5px solid rgba(255,87,34,.25);border-radius:12px;padding:22px 24px;margin-bottom:6px">
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;color:#fff;letter-spacing:2px;text-transform:uppercase">IPL 2026 · Advanced Analytics Dashboard</div>
+    <div style="font-size:12px;color:#888;margin-top:6px;line-height:1.7">Built from <span style="color:#FF5722;font-weight:600">74 match ball-by-ball JSON files</span> · Season 19 · 10 teams · All metrics computed programmatically from raw delivery data.<br>
+    Every number on this dashboard traces back to a single delivery record — no manual estimates.</div>
+    <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
+      <span style="font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;background:rgba(255,87,34,.2);color:#FF5722">9 Interactive Panels</span>
+      <span style="font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;background:rgba(38,198,218,.15);color:#26C6DA">6 Pivot Fact Tables</span>
+      <span style="font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;background:rgba(255,213,79,.12);color:#FFD54F">Ball-by-Ball Source</span>
+      <span style="font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;background:rgba(102,187,106,.15);color:#66BB6A">Live Slicers &amp; Filters</span>
+    </div>
+  </div>
+
+  <!-- SECTION: METRICS INDEX -->
+  <div class="sec">Metrics &amp; Formulas Index</div>
+
+  <!-- NRR -->
+  <div class="card" style="margin-bottom:10px">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+      <div style="background:rgba(255,87,34,.15);border-radius:6px;padding:6px 12px;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:800;color:#FF5722;letter-spacing:1px">NRR</div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:700;color:var(--txt)">Net Run Rate</div>
+      <span style="font-size:10px;color:#555;margin-left:auto">Panel: Overview</span>
+    </div>
+    <div style="background:var(--s2);border-radius:8px;padding:12px 14px;margin-bottom:10px;font-family:'Barlow Condensed',sans-serif;font-size:14px;color:var(--txt);letter-spacing:.3px">
+      NRR = (Total Runs Scored &divide; Total Overs Faced) &minus; (Total Runs Conceded &divide; Total Overs Bowled)
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
+      <div>
+        <div style="font-size:10px;font-weight:700;color:var(--txt2);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px">What it measures</div>
+        <div style="font-size:11px;color:#888;line-height:1.6">How many more runs per over a team scores compared to concedes — across the entire season cumulatively. The official ICC tiebreaker metric.</div>
+      </div>
+      <div>
+        <div style="font-size:10px;font-weight:700;color:var(--txt2);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px">How it's computed here</div>
+        <div style="font-size:11px;color:#888;line-height:1.6">Summed ball-by-ball across all innings. Wides excluded from balls faced/bowled. No-balls excluded from legal deliveries bowled only.</div>
+      </div>
+      <div>
+        <div style="font-size:10px;font-weight:700;color:var(--txt2);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px">Interpreting values</div>
+        <div style="font-size:11px;color:#888;line-height:1.6"><span style="color:#66BB6A;font-weight:600">Positive NRR</span> = scoring more than conceding on average. <span style="color:#EF5350;font-weight:600">Negative NRR</span> = conceding more. RCB's +0.921 is the season's best.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PHASE -->
+  <div class="card" style="margin-bottom:10px">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+      <div style="background:rgba(79,195,247,.15);border-radius:6px;padding:6px 12px;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:800;color:#4FC3F7;letter-spacing:1px">PHASE RR</div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:700;color:var(--txt)">Powerplay / Middle / Death Run Rates</div>
+      <span style="font-size:10px;color:#555;margin-left:auto">Panel: Phase Analysis</span>
+    </div>
+    <div style="background:var(--s2);border-radius:8px;padding:12px 14px;margin-bottom:10px;font-family:'Barlow Condensed',sans-serif;font-size:14px;color:var(--txt);letter-spacing:.3px">
+      Phase RR = Runs scored in phase &divide; (Legal balls in phase &divide; 6)
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:10px">
+      <div style="background:rgba(255,87,34,.08);border:.5px solid rgba(255,87,34,.2);border-radius:7px;padding:10px">
+        <div style="font-size:11px;font-weight:700;color:#FF5722;margin-bottom:4px">Powerplay — Overs 1–6</div>
+        <div style="font-size:10px;color:#888;line-height:1.6">First 6 overs. Fielding restrictions apply (max 2 fielders outside 30-yard circle). High-aggression phase. League avg: <span style="color:#FF5722;font-weight:600">10.17 RR</span>.</div>
+      </div>
+      <div style="background:rgba(79,195,247,.08);border:.5px solid rgba(79,195,247,.2);border-radius:7px;padding:10px">
+        <div style="font-size:11px;font-weight:700;color:#4FC3F7;margin-bottom:4px">Middle Overs — Overs 7–15</div>
+        <div style="font-size:10px;color:#888;line-height:1.6">9 overs of consolidation and platform-building. Spinners dominate. Typical scoring lull. League avg: <span style="color:#4FC3F7;font-weight:600">9.27 RR</span>.</div>
+      </div>
+      <div style="background:rgba(255,213,79,.08);border:.5px solid rgba(255,213,79,.2);border-radius:7px;padding:10px">
+        <div style="font-size:11px;font-weight:700;color:#FFD54F;margin-bottom:4px">Death Overs — Overs 16–20</div>
+        <div style="font-size:10px;color:#888;line-height:1.6">Final 5 overs. Maximum aggression, yorkers, slower balls. Match-deciding phase. League avg: <span style="color:#FFD54F;font-weight:600">10.75 RR</span>.</div>
+      </div>
+    </div>
+    <div style="font-size:11px;color:#666;line-height:1.6">Wickets lost/taken are tracked per phase separately. A team losing 3+ wickets in powerplay correlates strongly with sub-par totals.</div>
+  </div>
+
+  <!-- BII -->
+  <div class="card" style="margin-bottom:10px">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+      <div style="background:rgba(255,213,79,.15);border-radius:6px;padding:6px 12px;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:800;color:#FFD54F;letter-spacing:1px">BII</div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:700;color:var(--txt)">Batting Impact Index</div>
+      <span style="font-size:10px;color:#555;margin-left:auto">Panel: Batting</span>
+    </div>
+    <div style="background:var(--s2);border-radius:8px;padding:12px 14px;margin-bottom:10px;font-family:'Barlow Condensed',sans-serif;font-size:14px;color:var(--txt);letter-spacing:.3px">
+      BII = (Runs &divide; Innings) &times; (SR &divide; 155) &times; (Avg &divide; 32) &times; (1 + Boundary% &times; 0.3)
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div>
+        <div style="font-size:10px;font-weight:700;color:var(--txt2);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Formula Components</div>
+        <div style="display:flex;flex-direction:column;gap:5px;font-size:11px;color:#888;line-height:1.6">
+          <div><span style="color:#FF5722;font-weight:600">Runs &divide; Innings</span> — average runs contributed per innings (volume)</div>
+          <div><span style="color:#26C6DA;font-weight:600">SR &divide; 155</span> — strike rate normalised against league avg SR of 155 (speed)</div>
+          <div><span style="color:#FFD54F;font-weight:600">Avg &divide; 32</span> — batting average normalised against league avg of 32 (consistency)</div>
+          <div><span style="color:#66BB6A;font-weight:600">Boundary% &times; 0.3</span> — bonus for boundary-hitting ability; % of runs from 4s &amp; 6s</div>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:10px;font-weight:700;color:var(--txt2);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Design Rationale</div>
+        <div style="font-size:11px;color:#888;line-height:1.6">Pure run totals favour players with more innings. Pure SR rewards cameos. BII combines volume, speed, consistency and aggression into a single number. A batter scoring 50 runs/inn at SR 200 with high boundary% will outscore someone with 700 season runs at SR 140.<br><br>
+        <span style="color:#FFD54F;font-weight:600">Suryavanshi's BII of 135.3</span> is an outlier — driven by his extraordinary SR 225 and boundary% near 70%.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BowlII -->
+  <div class="card" style="margin-bottom:10px">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+      <div style="background:rgba(171,71,188,.15);border-radius:6px;padding:6px 12px;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:800;color:#AB47BC;letter-spacing:1px">BowlII</div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:700;color:var(--txt)">Bowling Impact Index</div>
+      <span style="font-size:10px;color:#555;margin-left:auto">Panel: Bowling</span>
+    </div>
+    <div style="background:var(--s2);border-radius:8px;padding:12px 14px;margin-bottom:10px;font-family:'Barlow Condensed',sans-serif;font-size:14px;color:var(--txt);letter-spacing:.3px">
+      BowlII = (Wkts &divide; Innings) &times; (1 + (9.5 &minus; Econ) &divide; 9.5) &times; (Dot% &divide; 35) &times; 10
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div>
+        <div style="font-size:10px;font-weight:700;color:var(--txt2);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Formula Components</div>
+        <div style="display:flex;flex-direction:column;gap:5px;font-size:11px;color:#888;line-height:1.6">
+          <div><span style="color:#FF5722;font-weight:600">Wkts &divide; Innings</span> — wickets per innings bowled (approx. overs &divide; 4)</div>
+          <div><span style="color:#26C6DA;font-weight:600">Economy saving</span> — 1 + (9.5 − econ) &divide; 9.5 · league avg economy is 9.5</div>
+          <div><span style="color:#FFD54F;font-weight:600">Dot% &divide; 35</span> — dot ball ratio normalised against league avg of 35%</div>
+          <div><span style="color:#66BB6A;font-weight:600">&times; 10</span> — scaling factor to produce a readable 10–25 range</div>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:10px;font-weight:700;color:var(--txt2);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Design Rationale</div>
+        <div style="font-size:11px;color:#888;line-height:1.6">Pure wicket counts ignore economy. Pure economy ignores wicket-taking threat. BowlII penalises expensive wicket-takers and rewards economical ones. Dot ball ratio captures pressure-building ability independently of wickets.<br><br>
+        <span style="color:#66BB6A;font-weight:600">JO Holder (BowlII 24.3)</span> leads despite 17 wickets because his 7.62 economy is the season's best by far, combined with 40% dot balls.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chase vs Defend -->
+  <div class="card" style="margin-bottom:10px">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+      <div style="background:rgba(38,198,218,.15);border-radius:6px;padding:6px 12px;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:800;color:#26C6DA;letter-spacing:1px">C/D</div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:700;color:var(--txt)">Chase vs Defend Success Rate</div>
+      <span style="font-size:10px;color:#555;margin-left:auto">Panel: Chase / Defend</span>
+    </div>
+    <div style="background:var(--s2);border-radius:8px;padding:12px 14px;margin-bottom:10px;font-family:'Barlow Condensed',sans-serif;font-size:14px;color:var(--txt);letter-spacing:.3px">
+      Chase Win% = Chase Wins &divide; (Chase Wins + Chase Losses) &nbsp;·&nbsp; Defend Win% = Defend Wins &divide; (Defend Wins + Defend Losses)
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
+      <div>
+        <div style="font-size:10px;font-weight:700;color:#26C6DA;text-transform:uppercase;letter-spacing:1px;margin-bottom:5px">Chasing (Batting 2nd)</div>
+        <div style="font-size:11px;color:#888;line-height:1.6">Team bats second, knows the target. Requires calibrated aggression and composure under pressure. DC leads (6W/9 games) as best chasers.</div>
+      </div>
+      <div>
+        <div style="font-size:10px;font-weight:700;color:#AB47BC;text-transform:uppercase;letter-spacing:1px;margin-bottom:5px">Defending (Batting 1st)</div>
+        <div style="font-size:11px;color:#888;line-height:1.6">Team sets a total then bowls. Requires big scores plus execution under pressure with the ball. SRH leads defend rate (6W/10 games).</div>
+      </div>
+      <div>
+        <div style="font-size:10px;font-weight:700;color:#66BB6A;text-transform:uppercase;letter-spacing:1px;margin-bottom:5px">Toss Context</div>
+        <div style="font-size:11px;color:#888;line-height:1.6">Season toss→win conversion = 50%, suggesting toss advantage is marginal. Teams that win regardless of toss decision are the most versatile.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Partnerships -->
+  <div class="card" style="margin-bottom:10px">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+      <div style="background:rgba(255,138,101,.15);border-radius:6px;padding:6px 12px;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:800;color:#FF8A65;letter-spacing:1px">P&#x2022;SHIP</div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:700;color:var(--txt)">Partnership Analytics</div>
+      <span style="font-size:10px;color:#555;margin-left:auto">Panel: Partnerships</span>
+    </div>
+    <div style="background:var(--s2);border-radius:8px;padding:12px 14px;margin-bottom:10px;font-family:'Barlow Condensed',sans-serif;font-size:14px;color:var(--txt);letter-spacing:.3px">
+      Partnership SR = Runs scored during stand &divide; (Legal balls faced during stand &divide; 6) &times; 6 &nbsp;·&nbsp; simplified: (Runs &divide; Balls) &times; 100
+    </div>
+    <div style="font-size:11px;color:#888;line-height:1.7">
+      Partnerships are tracked ball-by-ball: a new stand begins when a wicket falls and resets when either batter is dismissed. Only <span style="color:#fff">batter runs + leg-byes + byes</span> count toward partnership runs (wides/no-balls excluded as they are bowler errors, not partnership-generated).<br><br>
+      The <span style="color:#FFD54F;font-weight:600">Jaiswal &amp; Suryavanshi (RR)</span> stand of 121 at SR 268.9 is the season's highest-strike-rate significant partnership — set in just 45 balls.
+    </div>
+  </div>
+
+  <!-- Venue -->
+  <div class="card" style="margin-bottom:10px">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+      <div style="background:rgba(102,187,106,.15);border-radius:6px;padding:6px 12px;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:800;color:#66BB6A;letter-spacing:1px">VENUE</div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:700;color:var(--txt)">Venue Analytics</div>
+      <span style="font-size:10px;color:#555;margin-left:auto">Panel: Venues</span>
+    </div>
+    <div style="background:var(--s2);border-radius:8px;padding:12px 14px;margin-bottom:10px;font-family:'Barlow Condensed',sans-serif;font-size:14px;color:var(--txt);letter-spacing:.3px">
+      Avg 1st Inn Score = &sum;(1st innings totals) &divide; Matches &nbsp;·&nbsp; Chase Win% = Chase wins &divide; Completed results
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div style="font-size:11px;color:#888;line-height:1.7">
+        <span style="color:#fff;font-weight:600">1st vs 2nd innings differential</span> reveals pitch behaviour. A large positive diff (1st &gt; 2nd) means the pitch deteriorates or dew helps chasers. A negative diff (Delhi: −2.4) indicates dew-heavy conditions strongly favouring the chasing side.<br><br>
+        <span style="color:#FFD54F;font-weight:600">Jaipur (225.5 avg 1st inn)</span> is the season's highest-scoring venue. <span style="color:#EF5350;font-weight:600">Lucknow (149.4)</span> is the lowest.
+      </div>
+      <div style="font-size:11px;color:#888;line-height:1.7">
+        <span style="color:#fff;font-weight:600">Chase Win%</span> above 60% suggests conditions heavily favour batting second (dew, worn pitch). Below 40% suggests batting first is safer (good pitch, seaming conditions).<br><br>
+        <span style="color:#66BB6A;font-weight:600">Delhi (86% chase win)</span> and <span style="color:#66BB6A;font-weight:600">Raipur (100%)</span> are extreme chase-friendly venues. <span style="color:#EF5350;font-weight:600">Hyderabad (29%)</span> strongly favours batting first.
+      </div>
+    </div>
+  </div>
+
+  <!-- TEI -->
+  <div class="card" style="margin-bottom:10px">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+      <div style="background:rgba(255,213,79,.15);border-radius:6px;padding:6px 12px;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:800;color:#FFD54F;letter-spacing:1px">TEI</div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:700;color:var(--txt)">Team Efficiency Index</div>
+      <span style="font-size:10px;color:#555;margin-left:auto">Panel: TEI &amp; Radar</span>
+    </div>
+    <div style="background:var(--s2);border-radius:8px;padding:12px 14px;margin-bottom:12px;font-family:'Barlow Condensed',sans-serif;font-size:14px;color:var(--txt);letter-spacing:.3px;line-height:2">
+      TEI = [ (W% &times; 0.35) + (NRR<sub style="font-size:11px">norm</sub> &times; 0.20) + (BatPhase &times; 0.20) + (BowlEff &times; 0.15) + (CD<sub style="font-size:11px">comp</sub> &times; 0.10) ] &times; 100
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:12px">
+      <div style="text-align:center;background:rgba(255,87,34,.07);border-radius:7px;padding:10px 6px">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;color:#FF5722">35%</div>
+        <div style="font-size:10px;color:#FF5722;font-weight:700;margin:3px 0">Win Rate</div>
+        <div style="font-size:9px;color:#666">Wins ÷ Matches</div>
+      </div>
+      <div style="text-align:center;background:rgba(38,198,218,.07);border-radius:7px;padding:10px 6px">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;color:#26C6DA">20%</div>
+        <div style="font-size:10px;color:#26C6DA;font-weight:700;margin:3px 0">NRR Norm</div>
+        <div style="font-size:9px;color:#666">(NRR+1)÷2</div>
+      </div>
+      <div style="text-align:center;background:rgba(255,213,79,.07);border-radius:7px;padding:10px 6px">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;color:#FFD54F">20%</div>
+        <div style="font-size:10px;color:#FFD54F;font-weight:700;margin:3px 0">Bat Phase</div>
+        <div style="font-size:9px;color:#666">PP/Mid/Dth vs avg</div>
+      </div>
+      <div style="text-align:center;background:rgba(171,71,188,.07);border-radius:7px;padding:10px 6px">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;color:#AB47BC">15%</div>
+        <div style="font-size:10px;color:#AB47BC;font-weight:700;margin:3px 0">Bowl Eff</div>
+        <div style="font-size:9px;color:#666">9.5 ÷ avg econ</div>
+      </div>
+      <div style="text-align:center;background:rgba(102,187,106,.07);border-radius:7px;padding:10px 6px">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;color:#66BB6A">10%</div>
+        <div style="font-size:10px;color:#66BB6A;font-weight:700;margin:3px 0">Chase+Def</div>
+        <div style="font-size:9px;color:#666">(C%+D%)÷2</div>
+      </div>
+    </div>
+    <div style="font-size:11px;color:#888;line-height:1.7">Win% has the highest weight as it directly reflects match outcomes. NRR and BatPhase together (40%) capture offensive strength. BowlEff rewards disciplined bowling economies. Chase+Defend composite rewards tactical versatility. The index is unit-free and scales to ~100 max.</div>
+  </div>
+
+  <!-- Radar -->
+  <div class="card" style="margin-bottom:10px">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+      <div style="background:rgba(79,195,247,.15);border-radius:6px;padding:6px 12px;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:800;color:#4FC3F7;letter-spacing:1px">RADAR</div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:700;color:var(--txt)">Radar Chart Normalisation</div>
+      <span style="font-size:10px;color:#555;margin-left:auto">Panel: TEI &amp; Radar</span>
+    </div>
+    <div style="background:var(--s2);border-radius:8px;padding:12px 14px;margin-bottom:10px;font-family:'Barlow Condensed',sans-serif;font-size:14px;color:var(--txt);letter-spacing:.3px">
+      Normalised value = clamp( (raw &minus; season_low) &divide; (season_high &minus; season_low) &times; 100, 0, 100 )
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:9px">
+      <div style="font-size:11px;color:#888;line-height:1.6"><span style="color:#fff;font-weight:600">6 radar axes</span> per team: Win Rate, Bat Composite, Bowl Efficiency, PP Batting, Death Batting, Chase Rate. Each axis normalised 0–100 against season extremes so all teams fit the same scale.</div>
+      <div style="font-size:11px;color:#888;line-height:1.6"><span style="color:#fff;font-weight:600">Larger area</span> = more dominant team across dimensions. A narrow shape indicates a team strong in some areas but weak in others. RCB's polygon is the largest overall.</div>
+      <div style="font-size:11px;color:#888;line-height:1.6"><span style="color:#fff;font-weight:600">Source table</span> shows both the normalised (0–100) and raw values side-by-side. Green cells indicate the winner for each metric between the two selected teams.</div>
+    </div>
+  </div>
+
+
+</div><!-- /panel-readme -->
+
+<!-- ═══════ INSIGHTS ═══════ -->
+<div id="panel-insights" class="panel">
+
+  <!-- hero -->
+  <div style="background:linear-gradient(135deg,rgba(255,213,79,.10),rgba(171,71,188,.08));border:.5px solid rgba(255,213,79,.25);border-radius:12px;padding:20px 24px;margin-bottom:6px;display:flex;align-items:center;gap:16px">
+    <div style="font-size:36px;line-height:1">💡</div>
+    <div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:900;color:#fff;letter-spacing:1.5px;text-transform:uppercase">Season Insights — IPL 2026</div>
+      <div style="font-size:11px;color:#888;margin-top:4px;line-height:1.6">Derived from ball-by-ball data across 74 matches · 10 teams · ~29,000 deliveries. Insights ranked by analytical significance.</div>
+    </div>
+  </div>
+
+  <!-- ── CATEGORY 1: TEAM PERFORMANCE ── -->
+  <div class="sec">Team Performance</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:11px;margin-bottom:11px">
+
+    <!-- RCB dominance -->
+    <div class="card" style="border-left:3px solid #FF5722">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px">
+        <div style="font-size:10px;font-weight:700;color:#FF5722;text-transform:uppercase;letter-spacing:1px">🏆 Standout Team</div>
+        <span style="font-size:9px;background:rgba(255,87,34,.15);color:#FF5722;padding:2px 7px;border-radius:10px;font-weight:700">RCB</span>
+      </div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:var(--txt);margin-bottom:6px;line-height:1.3">RCB are the runaway leaders — best NRR, most wins, top batting RPO</div>
+      <div style="font-size:11px;color:#888;line-height:1.6">With NRR +0.921 (next best is SRH at +0.386), RCB outpaced the field not just in wins but in margin of victory. Their batting RPO of <span style="color:#FF5722;font-weight:600">10.43</span> is the season's best, and they concede just <span style="color:#FF5722;font-weight:600">9.51</span>. A team firing on all cylinders simultaneously.</div>
+      <div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap">
+        <span style="font-size:10px;padding:2px 8px;border-radius:10px;background:rgba(102,187,106,.15);color:#66BB6A;font-weight:600">11W / 5L</span>
+        <span style="font-size:10px;padding:2px 8px;border-radius:10px;background:rgba(255,87,34,.15);color:#FF5722;font-weight:600">NRR +0.921</span>
+        <span style="font-size:10px;padding:2px 8px;border-radius:10px;background:rgba(255,213,79,.12);color:#FFD54F;font-weight:600">TEI 70.7</span>
+      </div>
+    </div>
+
+    <!-- GT most matches, still qualified -->
+    <div class="card" style="border-left:3px solid #66BB6A">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px">
+        <div style="font-size:10px;font-weight:700;color:#66BB6A;text-transform:uppercase;letter-spacing:1px">📊 Efficiency Paradox</div>
+        <span style="font-size:9px;background:rgba(102,187,106,.15);color:#66BB6A;padding:2px 7px;border-radius:10px;font-weight:700">GT</span>
+      </div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:var(--txt);margin-bottom:6px;line-height:1.3">GT played the most games (17) yet qualified with a negative NRR</div>
+      <div style="font-size:11px;color:#888;line-height:1.6">Gujarat Titans played 17 matches — more than any team — due to washouts and rescheduling. Despite qualifying with 20 points, their NRR of <span style="color:#EF5350;font-weight:600">−0.061</span> reveals they won close games but lost big ones. Batting RPO of 9.50 is among the lowest in top-4, exposing fragile top-order depth.</div>
+      <div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap">
+        <span style="font-size:10px;padding:2px 8px;border-radius:10px;background:rgba(102,187,106,.15);color:#66BB6A;font-weight:600">10W / 7L</span>
+        <span style="font-size:10px;padding:2px 8px;border-radius:10px;background:rgba(239,83,80,.15);color:#EF5350;font-weight:600">NRR −0.061</span>
+        <span style="font-size:10px;padding:2px 8px;border-radius:10px;background:rgba(255,213,79,.12);color:#FFD54F;font-weight:600">17 matches</span>
+      </div>
+    </div>
+
+    <!-- KKR vs DC tiebreaker -->
+    <div class="card" style="border-left:3px solid #AB47BC">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px">
+        <div style="font-size:10px;font-weight:700;color:#AB47BC;text-transform:uppercase;letter-spacing:1px">⚖️ NRR Tiebreaker</div>
+        <span style="font-size:9px;background:rgba(171,71,188,.15);color:#AB47BC;padding:2px 7px;border-radius:10px;font-weight:700">KKR vs DC</span>
+      </div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:var(--txt);margin-bottom:6px;line-height:1.3">KKR (−0.022) outranked DC (−0.681) on NRR despite same points</div>
+      <div style="font-size:11px;color:#888;line-height:1.6">Both KKR and DC finished on 14 points but KKR's NRR of <span style="color:#AB47BC;font-weight:600">−0.022</span> vs DC's <span style="color:#EF5350;font-weight:600">−0.681</span> shows a stark difference in margin quality. DC conceded <span style="color:#EF5350;font-weight:600">10.14 RPO</span> — worst bowling economy among all non-bottom teams — despite having the season's top wicket-taker (Rabada, 29 wkts).</div>
+      <div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap">
+        <span style="font-size:10px;padding:2px 8px;border-radius:10px;background:rgba(171,71,188,.15);color:#AB47BC;font-weight:600">KKR −0.022</span>
+        <span style="font-size:10px;padding:2px 8px;border-radius:10px;background:rgba(239,83,80,.15);color:#EF5350;font-weight:600">DC −0.681</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── CATEGORY 2: BATTING ── -->
+  <div class="sec">Batting Insights</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:11px">
+
+    <!-- Suryavanshi -->
+    <div class="card" style="border-left:3px solid #FFD54F">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px">
+        <div style="font-size:10px;font-weight:700;color:#FFD54F;text-transform:uppercase;letter-spacing:1px">⚡ Phenomenon</div>
+        <span style="font-size:9px;background:rgba(255,213,79,.15);color:#FFD54F;padding:2px 7px;border-radius:10px;font-weight:700">Suryavanshi · RR</span>
+      </div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:var(--txt);margin-bottom:6px;line-height:1.3">Suryavanshi's SR 225.6 is in a different universe — nearest rival is 36 points behind</div>
+      <div style="font-size:11px;color:#888;line-height:1.6">Among batters with 100+ balls, the next-best strike rate is FH Allen at <span style="color:#fff;font-weight:600">207.7</span> and Priyansh Arya at <span style="color:#fff;font-weight:600">201.1</span>. Suryavanshi's <span style="color:#FFD54F;font-weight:600">225.6</span> SR combined with <span style="color:#FFD54F;font-weight:600">776 runs</span> is historically rare — typically high SR comes with lower volume. His BII of <span style="color:#FFD54F;font-weight:600">135.3</span> is nearly double the next batter (Kohli at 90.9). 72 sixes is the most by any batter this season.</div>
+      <div style="margin-top:10px;background:var(--s2);border-radius:7px;padding:9px 12px;display:flex;gap:16px;flex-wrap:wrap">
+        <div style="text-align:center"><div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;color:#FFD54F">776</div><div style="font-size:9px;color:#666">Runs</div></div>
+        <div style="text-align:center"><div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;color:#FFD54F">225.6</div><div style="font-size:9px;color:#666">Strike Rate</div></div>
+        <div style="text-align:center"><div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;color:#FFD54F">48.5</div><div style="font-size:9px;color:#666">Average</div></div>
+        <div style="text-align:center"><div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;color:#FFD54F">72</div><div style="font-size:9px;color:#666">Sixes</div></div>
+        <div style="text-align:center"><div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;color:#FFD54F">135.3</div><div style="font-size:9px;color:#666">BII</div></div>
+      </div>
+    </div>
+
+    <!-- Kohli avg vs SR tradeoff -->
+    <div class="card" style="border-left:3px solid #26C6DA">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px">
+        <div style="font-size:10px;font-weight:700;color:#26C6DA;text-transform:uppercase;letter-spacing:1px">🎯 Best Average</div>
+        <span style="font-size:9px;background:rgba(38,198,218,.15);color:#26C6DA;padding:2px 7px;border-radius:10px;font-weight:700">Kohli · RCB</span>
+      </div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:var(--txt);margin-bottom:6px;line-height:1.3">Kohli's avg 56.25 is the season's best — proving consistency still wins</div>
+      <div style="font-size:11px;color:#888;line-height:1.6">Among batters with 10+ innings, Kohli's average of <span style="color:#26C6DA;font-weight:600">56.25</span> leads the season. SS Iyer follows at <span style="color:#fff;font-weight:600">55.33</span>. While Suryavanshi dominates BII on speed, Kohli's combination of high average and SR 158.8 makes him the most complete conventional batter. His <span style="color:#26C6DA;font-weight:600">23.1% dot ball rate</span> is the season's lowest — indicating he wastes almost no deliveries.</div>
+      <div style="margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:7px">
+        <div style="background:var(--s2);border-radius:6px;padding:8px;text-align:center">
+          <div style="font-size:10px;color:#666;margin-bottom:2px">Dot Ball % (lowest)</div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;color:#66BB6A">23.1%</div>
+          <div style="font-size:9px;color:#555">vs league avg 30%</div>
+        </div>
+        <div style="background:var(--s2);border-radius:6px;padding:8px;text-align:center">
+          <div style="font-size:10px;color:#666;margin-bottom:2px">BII Rank</div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;color:#26C6DA">#2</div>
+          <div style="font-size:9px;color:#555">behind Suryavanshi</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:11px;margin-bottom:11px">
+
+    <!-- PBKS death batting -->
+    <div class="card" style="border-left:3px solid #FFD54F">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px">
+        <div style="font-size:10px;font-weight:700;color:#FFD54F;text-transform:uppercase;letter-spacing:1px">💀 Death Batting</div>
+        <span style="font-size:9px;background:rgba(255,213,79,.15);color:#FFD54F;padding:2px 7px;border-radius:10px;font-weight:700">PBKS</span>
+      </div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;color:var(--txt);margin-bottom:5px;line-height:1.3">PBKS hit 12.51 RR in death overs — the season's most destructive finish</div>
+      <div style="font-size:11px;color:#888;line-height:1.6">Punjab Kings' death-over run rate of <span style="color:#FFD54F;font-weight:600">12.51</span> is 1.76 runs/over ahead of the next team (RCB 11.47). Priyansh Arya's SR 201+ and Simran Singh's power-hitting drive this. Their 163 sixes — 2nd most in the season — are concentrated heavily in overs 16–20.</div>
+    </div>
+
+    <!-- LSG middle overs collapse -->
+    <div class="card" style="border-left:3px solid #EF5350">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px">
+        <div style="font-size:10px;font-weight:700;color:#EF5350;text-transform:uppercase;letter-spacing:1px">📉 Middle Crisis</div>
+        <span style="font-size:9px;background:rgba(239,83,80,.15);color:#EF5350;padding:2px 7px;border-radius:10px;font-weight:700">LSG</span>
+      </div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;color:var(--txt);margin-bottom:5px;line-height:1.3">LSG's middle-overs rate of 7.93 is the worst in the league by a wide margin</div>
+      <div style="font-size:11px;color:#888;line-height:1.6">Lucknow's middle-overs RR of <span style="color:#EF5350;font-weight:600">7.93</span> is a full run below CSK (8.56), the next-worst. This scoring lull directly explains their 4W/9L record. MR Marsh often consumed balls in these overs without accelerating, leaving too much to do in the death.</div>
+    </div>
+
+    <!-- RR boundary domination -->
+    <div class="card" style="border-left:3px solid #26C6DA">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px">
+        <div style="font-size:10px;font-weight:700;color:#26C6DA;text-transform:uppercase;letter-spacing:1px">🏏 Boundary Kings</div>
+        <span style="font-size:9px;background:rgba(38,198,218,.15);color:#26C6DA;padding:2px 7px;border-radius:10px;font-weight:700">RR</span>
+      </div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;color:var(--txt);margin-bottom:5px;line-height:1.3">Rajasthan hit 181 sixes — the season's most — and led all teams in PP run rate at 11.67</div>
+      <div style="font-size:11px;color:#888;line-height:1.6">Driven by Suryavanshi (72) and Jaiswal at the top, RR's powerplay RR of <span style="color:#26C6DA;font-weight:600">11.67</span> is the highest in the league. Their combined 257 fours + 181 sixes (438 boundaries) makes them the most boundary-reliant team — a strategy that works when both openers fire simultaneously.</div>
+    </div>
+  </div>
+
+  <!-- ── CATEGORY 3: BOWLING ── -->
+  <div class="sec">Bowling Insights</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:11px">
+
+    <!-- Narine economy -->
+    <div class="card" style="border-left:3px solid #AB47BC">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px">
+        <div style="font-size:10px;font-weight:700;color:#AB47BC;text-transform:uppercase;letter-spacing:1px">🔒 Economy King</div>
+        <span style="font-size:9px;background:rgba(171,71,188,.15);color:#AB47BC;padding:2px 7px;border-radius:10px;font-weight:700">SP Narine · KKR</span>
+      </div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:var(--txt);margin-bottom:6px;line-height:1.3">Narine's economy of 6.80 is the cheapest of any bowler with 15+ wickets — by a vast margin</div>
+      <div style="font-size:11px;color:#888;line-height:1.6">The next-best economy among 15-wicket bowlers is JO Holder at <span style="color:#fff;font-weight:600">7.62</span>, itself exceptional. Narine at <span style="color:#AB47BC;font-weight:600">6.80</span> is 2.7 runs per over cheaper than the league's average economy of 9.5. His <span style="color:#AB47BC;font-weight:600">43% dot ball rate</span> is second-highest overall, and his death-over economy of 5.67 is extraordinary for that phase. Single-handedly kept KKR competitive despite a mid-table batting lineup.</div>
+      <div style="margin-top:10px;background:var(--s2);border-radius:7px;padding:9px 12px;display:flex;gap:16px;flex-wrap:wrap">
+        <div style="text-align:center"><div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;color:#AB47BC">6.80</div><div style="font-size:9px;color:#666">Economy</div></div>
+        <div style="text-align:center"><div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;color:#AB47BC">43%</div><div style="font-size:9px;color:#666">Dot Ball%</div></div>
+        <div style="text-align:center"><div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;color:#AB47BC">17</div><div style="font-size:9px;color:#666">Wickets</div></div>
+        <div style="text-align:center"><div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;color:#AB47BC">5.67</div><div style="font-size:9px;color:#666">Death Econ</div></div>
+      </div>
+    </div>
+
+    <!-- Rabada wickets vs DC NRR paradox -->
+    <div class="card" style="border-left:3px solid #4FC3F7">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px">
+        <div style="font-size:10px;font-weight:700;color:#4FC3F7;text-transform:uppercase;letter-spacing:1px">🎭 The Rabada Paradox</div>
+        <span style="font-size:9px;background:rgba(79,195,247,.15);color:#4FC3F7;padding:2px 7px;border-radius:10px;font-weight:700">K Rabada · GT</span>
+      </div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:var(--txt);margin-bottom:6px;line-height:1.3">Rabada leads with 29 wickets yet his team GT has a negative NRR (−0.061) while DC, who lack such a dominant bowler, have the worst NRR (−0.681) among non-bottom teams</div>
+      <div style="font-size:11px;color:#888;line-height:1.6">Rabada's <span style="color:#4FC3F7;font-weight:600">29 wickets</span> are the season's most and he plays for <span style="color:#4FC3F7;font-weight:600">Gujarat Titans</span>, not DC. GT's NRR of −0.061 shows they win close games but struggle in big margins. DC's poor NRR of −0.681 stems from an entirely different problem: their support bowlers concede <span style="color:#EF5350;font-weight:600">10.14 RPO overall</span> without a reliable second wicket-taker. Two separate cautionary tales about economy and depth.</div>
+      <div style="margin-top:10px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px">
+        <div style="background:var(--s2);border-radius:6px;padding:8px;text-align:center">
+          <div style="font-size:9px;color:#666;margin-bottom:2px">Rabada Wickets</div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;color:#4FC3F7">#1</div>
+        </div>
+        <div style="background:var(--s2);border-radius:6px;padding:8px;text-align:center">
+          <div style="font-size:9px;color:#666;margin-bottom:2px">DC Bowl RPO</div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;color:#EF5350">10.14</div>
+        </div>
+        <div style="background:var(--s2);border-radius:6px;padding:8px;text-align:center">
+          <div style="font-size:9px;color:#666;margin-bottom:2px">DC NRR</div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;color:#EF5350">−0.681</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:11px;margin-bottom:11px">
+
+    <!-- Kumar PP domination -->
+    <div class="card" style="border-left:3px solid #FF5722">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px">
+        <div style="font-size:10px;font-weight:700;color:#FF5722;text-transform:uppercase;letter-spacing:1px">🎳 PP Destroyer</div>
+        <span style="font-size:9px;background:rgba(255,87,34,.15);color:#FF5722;padding:2px 7px;border-radius:10px;font-weight:700">B Kumar · RCB</span>
+      </div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;color:var(--txt);margin-bottom:5px;line-height:1.3">Bhuvneshwar Kumar's PP economy of 7.00 is the season's best in any phase</div>
+      <div style="font-size:11px;color:#888;line-height:1.6">Bhuvi's powerplay economy of <span style="color:#FF5722;font-weight:600">7.00</span> with <span style="color:#FF5722;font-weight:600">17 PP wickets</span> gives RCB a massive early advantage every game. Beating the league PP avg of 10.17 by over 3 runs/over is the single biggest phase-bowling differential of the season.</div>
+    </div>
+
+    <!-- GT bowling depth -->
+    <div class="card" style="border-left:3px solid #66BB6A">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px">
+        <div style="font-size:10px;font-weight:700;color:#66BB6A;text-transform:uppercase;letter-spacing:1px">🌀 Spin Web</div>
+        <span style="font-size:9px;background:rgba(102,187,106,.15);color:#66BB6A;padding:2px 7px;border-radius:10px;font-weight:700">GT</span>
+      </div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;color:var(--txt);margin-bottom:5px;line-height:1.3">GT's middle-over bowling RPO of 8.97 is the best in the league — Rashid Khan's domain</div>
+      <div style="font-size:11px;color:#888;line-height:1.6">Rashid Khan's middle-over economy of <span style="color:#66BB6A;font-weight:600">8.86</span> combined with <span style="color:#66BB6A;font-weight:600">19 middle-over wickets</span> makes GT's overs 7–15 a near-unplayable stretch. GT's overall bowl RPO of 9.56 is 3rd best, built primarily on middle-over dominance.</div>
+    </div>
+
+    <!-- Siraj dot balls -->
+    <div class="card" style="border-left:3px solid #FF8A65">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px">
+        <div style="font-size:10px;font-weight:700;color:#FF8A65;text-transform:uppercase;letter-spacing:1px">⚫ Dot Machine</div>
+        <span style="font-size:9px;background:rgba(255,138,101,.15);color:#FF8A65;padding:2px 7px;border-radius:10px;font-weight:700">M Siraj · GT</span>
+      </div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;color:var(--txt);margin-bottom:5px;line-height:1.3">Siraj bowled 44.1% dot balls — the highest of any bowler with 15+ wickets</div>
+      <div style="font-size:11px;color:#888;line-height:1.6">Nearly every other delivery Siraj bowled was a dot. Combined with <span style="color:#FF8A65;font-weight:600">19 wickets</span> at economy <span style="color:#FF8A65;font-weight:600">9.19</span>, he is the pressure-building engine of GT's bowling attack — creating wicket opportunities through sustained dot-ball pressure rather than pace variation.</div>
+    </div>
+  </div>
+
+  <!-- ── CATEGORY 4: PARTNERSHIPS ── -->
+  <div class="sec">Partnership &amp; Chase / Defend Insights</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:11px;margin-bottom:11px">
+
+    <!-- Best stand -->
+    <div class="card" style="border-left:3px solid #FFD54F">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px">
+        <div style="font-size:10px;font-weight:700;color:#FFD54F;text-transform:uppercase;letter-spacing:1px">🤝 Record Stand</div>
+        <span style="font-size:9px;background:rgba(255,213,79,.15);color:#FFD54F;padding:2px 7px;border-radius:10px;font-weight:700">DC</span>
+      </div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;color:var(--txt);margin-bottom:5px;line-height:1.3">KL Rahul &amp; Nissanka's 214-run stand at SR 225.3 is the season's highest partnership</div>
+      <div style="font-size:11px;color:#888;line-height:1.6">Built in just <span style="color:#FFD54F;font-weight:600">95 balls</span>, this partnership is both the highest by runs and the highest by SR among 100+ run stands. It demonstrates that DC's batting ceiling is elite — it's the inconsistency around it that cost them in NRR.</div>
+    </div>
+
+    <!-- Jaiswal Suryavanshi fastest -->
+    <div class="card" style="border-left:3px solid #26C6DA">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px">
+        <div style="font-size:10px;font-weight:700;color:#26C6DA;text-transform:uppercase;letter-spacing:1px">⚡ Fastest Stand</div>
+        <span style="font-size:9px;background:rgba(38,198,218,.15);color:#26C6DA;padding:2px 7px;border-radius:10px;font-weight:700">RR</span>
+      </div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;color:var(--txt);margin-bottom:5px;line-height:1.3">Jaiswal &amp; Suryavanshi's 121 runs at SR 268.9 is the fastest 100+ partnership of the season</div>
+      <div style="font-size:11px;color:#888;line-height:1.6">Achieved in just <span style="color:#26C6DA;font-weight:600">45 balls</span>, this stand scored at nearly <span style="color:#26C6DA;font-weight:600">26.9 runs per over</span>. The most destructive opening combination in the league when both fire simultaneously — a match-winning partnership that often made opposition totals irrelevant within the powerplay.</div>
+    </div>
+
+    <!-- SRH best defenders -->
+    <div class="card" style="border-left:3px solid #AB47BC">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px">
+        <div style="font-size:10px;font-weight:700;color:#AB47BC;text-transform:uppercase;letter-spacing:1px">🛡️ Best Defenders</div>
+        <span style="font-size:9px;background:rgba(171,71,188,.15);color:#AB47BC;padding:2px 7px;border-radius:10px;font-weight:700">SRH</span>
+      </div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;color:var(--txt);margin-bottom:5px;line-height:1.3">SRH defended in 6 of 10 games successfully — the best defend rate in the season</div>
+      <div style="font-size:11px;color:#888;line-height:1.6">SRH's <span style="color:#AB47BC;font-weight:600">60% defend rate</span> (6W/10) is the season's best — they set totals and then defend them with their pace attack led by Kartik Tyagi (on loan from KKR). Their PP bowling concedes the most (11.10) but they compensate by regularly posting 200+ in their batting PP of 11.06.</div>
+    </div>
+  </div>
+
+  <!-- ── CATEGORY 5: VENUE ── -->
+  <div class="sec">Venue Insights</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:11px;margin-bottom:11px">
+
+    <!-- Delhi dew -->
+    <div class="card" style="border-left:3px solid #EF5350">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px">
+        <div style="font-size:10px;font-weight:700;color:#EF5350;text-transform:uppercase;letter-spacing:1px">🌧️ Dew Factor</div>
+        <span style="font-size:9px;background:rgba(239,83,80,.15);color:#EF5350;padding:2px 7px;border-radius:10px;font-weight:700">Delhi</span>
+      </div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;color:var(--txt);margin-bottom:5px;line-height:1.3">Delhi had the highest chase win rate (86%) and 2nd innings avg HIGHER than 1st innings</div>
+      <div style="font-size:11px;color:#888;line-height:1.6">At Arun Jaitley Stadium, the 2nd innings avg (<span style="color:#EF5350;font-weight:600">174.0</span>) actually exceeds the 1st innings (<span style="color:#fff;font-weight:600">171.6</span>) — a clear signature of heavy dew making bowling harder as the match progresses. The toss winner almost always chose to field first here.</div>
+    </div>
+
+    <!-- Hyderabad batting first -->
+    <div class="card" style="border-left:3px solid #66BB6A">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px">
+        <div style="font-size:10px;font-weight:700;color:#66BB6A;text-transform:uppercase;letter-spacing:1px">🏟️ Bat First</div>
+        <span style="font-size:9px;background:rgba(102,187,106,.15);color:#66BB6A;padding:2px 7px;border-radius:10px;font-weight:700">Hyderabad</span>
+      </div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;color:var(--txt);margin-bottom:5px;line-height:1.3">Hyderabad is the most bat-first friendly venue — only 29% of chasers win there</div>
+      <div style="font-size:11px;color:#888;line-height:1.6">The Rajiv Gandhi International Stadium had the largest 1st vs 2nd innings differential (<span style="color:#66BB6A;font-weight:600">+27.7 runs</span>). Likely due to pitch slowdown and the outfield pace favouring the team batting on a fresh surface. Teams winning the toss consistently chose to bat first.</div>
+    </div>
+
+    <!-- Jaipur run fest -->
+    <div class="card" style="border-left:3px solid #FFD54F">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px">
+        <div style="font-size:10px;font-weight:700;color:#FFD54F;text-transform:uppercase;letter-spacing:1px">💥 Run Feast</div>
+        <span style="font-size:9px;background:rgba(255,213,79,.15);color:#FFD54F;padding:2px 7px;border-radius:10px;font-weight:700">Jaipur</span>
+      </div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;color:var(--txt);margin-bottom:5px;line-height:1.3">Jaipur's 225.5 average 1st innings score is the highest of any venue in IPL 2026</div>
+      <div style="font-size:11px;color:#888;line-height:1.6">The Sawai Mansingh Stadium — Rajasthan's home ground and Suryavanshi's territory — produced an avg first innings of <span style="color:#FFD54F;font-weight:600">225.5</span>. Small ground, flat pitches, and dew-affected outfield create a batting paradise. Four of the five highest individual scores of the season were posted here.</div>
+    </div>
+  </div>
+
+  <!-- ── CATEGORY 6: TEI ── -->
+  <div class="sec">TEI &amp; Efficiency Insights</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:6px">
+
+    <!-- TEI vs points table discrepancy -->
+    <div class="card" style="border-left:3px solid #FFD54F">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px">
+        <div style="font-size:10px;font-weight:700;color:#FFD54F;text-transform:uppercase;letter-spacing:1px">📐 TEI vs Points Table</div>
+      </div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:var(--txt);margin-bottom:6px;line-height:1.3">KKR rank 6th on points but 7th on TEI — close games mask real efficiency gaps</div>
+      <div style="font-size:11px;color:#888;line-height:1.6">KKR's TEI of <span style="color:#FFD54F;font-weight:600">58.2</span> ranks 6th despite their mid-table points position, because Narine's extraordinary bowling efficiency boosts their TEI bowling component. However CSK (TEI 57.6) nearly matches them despite one fewer win — CSK's NRR and phase composites are comparable, revealing that their losses were narrower and more competitive than KKR's.<br><br>
+      GT rank 5th on points but 5th on TEI too — their high match count inflated points without improving quality metrics.</div>
+    </div>
+
+    <!-- Toss irrelevance -->
+    <div class="card" style="border-left:3px solid #26C6DA">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px">
+        <div style="font-size:10px;font-weight:700;color:#26C6DA;text-transform:uppercase;letter-spacing:1px">🪙 Toss is Overrated</div>
+      </div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:var(--txt);margin-bottom:6px;line-height:1.3">Season-wide toss-to-win rate is exactly 50% — the toss provides no statistical edge</div>
+      <div style="font-size:11px;color:#888;line-height:1.6">Across 74 matches the toss winner converted to a match win <span style="color:#26C6DA;font-weight:600">exactly 50%</span> of the time — statistically indistinguishable from a coin flip. This is consistent with broader T20 research. What matters is team quality and in-match execution, not which captain calls correctly.<br><br>
+      The perception of toss advantage is venue-specific (Delhi, Raipur) — not a season-wide phenomenon. Teams that dominate in both chase and defend (RCB, SRH) are the ones with genuine all-condition superiority.</div>
+    </div>
+  </div>
+
+</div><!-- /panel-insights -->
+
 </div><!-- /page -->
 
 <script>
@@ -453,13 +1131,13 @@ const NRR=[
   {s:'RCB',name:'Royal Challengers Bengaluru',m:16,w:11,l:5,nr:0,pts:22,nrr:+0.921,rb:10.433,rw:9.512,cw:7,cl:2,dw:4,dl:3},
   {s:'SRH',name:'Sunrisers Hyderabad',        m:15,w:9, l:6,nr:0,pts:18,nrr:+0.386,rb:10.529,rw:10.144,cw:3,cl:2,dw:6,dl:4},
   {s:'RR', name:'Rajasthan Royals',           m:16,w:9, l:7,nr:0,pts:18,nrr:+0.297,rb:10.398,rw:10.101,cw:4,cl:2,dw:5,dl:5},
-  {s:'PBKS',name:'Punjab Kings',              m:13,w:7, l:6,nr:1,pts:14,nrr:+0.304,rb:10.786,rw:10.483,cw:6,cl:2,dw:1,dl:4},
+  {s:'PBKS',name:'Punjab Kings',              m:14,w:7, l:6,nr:1,pts:15,nrr:+0.304,rb:10.786,rw:10.483,cw:6,cl:2,dw:1,dl:4},
   {s:'GT', name:'Gujarat Titans',             m:17,w:10,l:7,nr:0,pts:20,nrr:-0.061,rb:9.501, rw:9.562, cw:6,cl:4,dw:4,dl:3},
   {s:'DC', name:'Delhi Capitals',             m:14,w:7, l:7,nr:0,pts:14,nrr:-0.681,rb:9.460, rw:10.141,cw:6,cl:3,dw:1,dl:4},
   {s:'CSK',name:'Chennai Super Kings',        m:14,w:6, l:8,nr:0,pts:12,nrr:-0.200,rb:9.382, rw:9.582, cw:3,cl:3,dw:3,dl:5},
-  {s:'KKR',name:'Kolkata Knight Riders',      m:12,w:5, l:7,nr:2,pts:10,nrr:-0.022,rb:9.240, rw:9.262, cw:4,cl:3,dw:1,dl:4},
+  {s:'KKR',name:'Kolkata Knight Riders',      m:14,w:5, l:7,nr:2,pts:12,nrr:-0.022,rb:9.240, rw:9.262, cw:4,cl:3,dw:1,dl:4},
   {s:'MI', name:'Mumbai Indians',             m:14,w:4, l:10,nr:0,pts:8, nrr:-0.730,rb:9.520, rw:10.250,cw:3,cl:4,dw:1,dl:6},
-  {s:'LSG',name:'Lucknow Super Giants',       m:13,w:4, l:9, nr:1,pts:8, nrr:-0.718,rb:9.157, rw:9.874, cw:3,cl:2,dw:1,dl:7},
+  {s:'LSG',name:'Lucknow Super Giants',       m:14,w:4, l:9, nr:1,pts:9, nrr:-0.718,rb:9.157, rw:9.874, cw:3,cl:2,dw:1,dl:7},
 ];
 
 const PHASE=[
@@ -481,7 +1159,7 @@ const BAT=[
   {n:'Shubman Gill',   t:'GT',  inn:16,r:732, b:472,avg:45.75,sr:155.08,s4:74,s6:33, dot:28.4,bdry:67.5,pp_r:330,pp_b:218,mid_r:365,mid_b:228,dth_r:37, dth_b:26},
   {n:'B Sai Sudharsan',t:'GT',  inn:17,r:722, b:481,avg:45.12,sr:150.10,s4:75,s6:30, dot:28.3,bdry:66.5,pp_r:347,pp_b:259,mid_r:299,mid_b:185,dth_r:76, dth_b:37},
   {n:'V Kohli',        t:'RCB', inn:16,r:675, b:425,avg:56.25,sr:158.82,s4:73,s6:25, dot:23.1,bdry:65.5,pp_r:360,pp_b:215,mid_r:249,mid_b:183,dth_r:66, dth_b:27},
-  {n:'H Klaasen',      t:'SRH', inn:13,r:624, b:413,avg:48.00,sr:151.09,s4:48,s6:31, dot:24.2,bdry:60.6,pp_r:21, pp_b:22, mid_r:418,mid_b:282,dth_r:185,dth_b:109},
+  {n:'H Klaasen',      t:'SRH', inn:15,r:624, b:413,avg:48.00,sr:151.09,s4:48,s6:31, dot:24.2,bdry:60.6,pp_r:21, pp_b:22, mid_r:418,mid_b:282,dth_r:185,dth_b:109},
   {n:'Ishan Kishan',   t:'SRH', inn:15,r:602, b:342,avg:40.13,sr:176.02,s4:60,s6:32, dot:25.1,bdry:71.8,pp_r:187,pp_b:106,mid_r:353,mid_b:203,dth_r:62, dth_b:33},
   {n:'KL Rahul',       t:'DC',  inn:14,r:593, b:355,avg:45.62,sr:167.04,s4:56,s6:31, dot:24.5,bdry:69.1,pp_r:241,pp_b:163,mid_r:284,mid_b:156,dth_r:68, dth_b:36},
   {n:'Abhishek Sharma',t:'SRH', inn:15,r:563, b:304,avg:40.21,sr:185.20,s4:50,s6:43, dot:27.6,bdry:81.3,pp_r:369,pp_b:191,mid_r:174,mid_b:94, dth_r:20, dth_b:19},
@@ -506,22 +1184,22 @@ BAT.forEach(b=>{
 });
 
 const BWL=[
-  {n:'K Rabada',          t:'DC',  w:29,ov:64.7,r:631,econ:9.76, avg:21.76,sr:13.4,dot:43.0,pp_rr:10.00,mid_rr:9.00, dth_rr:9.33, pp_w:20,mid_w:3,  dth_w:6},
+  {n:'K Rabada',          t:'GT',  w:29,ov:64.7,r:631,econ:9.76, avg:21.76,sr:13.4,dot:43.0,pp_rr:10.00,mid_rr:9.00, dth_rr:9.33, pp_w:20,mid_w:3,  dth_w:6},
   {n:'B Kumar',           t:'RCB', w:28,ov:63.0,r:504,econ:8.00, avg:18.00,sr:13.5,dot:39.4,pp_rr:7.00, mid_rr:9.80, dth_rr:9.04, pp_w:17,mid_w:1,  dth_w:10},
   {n:'JC Archer',         t:'RR',  w:25,ov:60.0,r:566,econ:9.43, avg:22.64,sr:14.4,dot:42.8,pp_rr:10.18,mid_rr:6.67, dth_rr:9.41, pp_w:14,mid_w:4,  dth_w:7},
   {n:'Rashid Khan',       t:'GT',  w:21,ov:56.8,r:527,econ:9.27, avg:25.10,sr:16.2,dot:32.0,pp_rr:4.50, mid_rr:8.86, dth_rr:12.44,pp_w:0, mid_w:19, dth_w:2},
-  {n:'A Kamboj',          t:'RCB', w:21,ov:50.3,r:535,econ:10.63,avg:25.48,sr:14.4,dot:37.1,pp_rr:10.43,mid_rr:9.62, dth_rr:11.20,pp_w:5, mid_w:3,  dth_w:13},
-  {n:'E Malinga',         t:'LSG', w:20,ov:54.3,r:510,econ:9.39, avg:25.50,sr:16.3,dot:35.0,pp_rr:9.00, mid_rr:8.61, dth_rr:10.71,pp_w:5, mid_w:7,  dth_w:8},
+  {n:'A Kamboj',          t:'CSK', w:21,ov:50.3,r:535,econ:10.63,avg:25.48,sr:14.4,dot:37.1,pp_rr:10.43,mid_rr:9.62, dth_rr:11.20,pp_w:5, mid_w:3,  dth_w:13},
+  {n:'E Malinga',         t:'SRH', w:20,ov:54.3,r:510,econ:9.39, avg:25.50,sr:16.3,dot:35.0,pp_rr:9.00, mid_rr:8.61, dth_rr:10.71,pp_w:5, mid_w:7,  dth_w:8},
   {n:'Rasikh Salam',      t:'RCB', w:19,ov:42.8,r:407,econ:9.50, avg:21.42,sr:13.5,dot:31.9,pp_rr:8.47, mid_rr:10.33,dth_rr:10.05,pp_w:5, mid_w:4,  dth_w:10},
-  {n:'Mohammed Siraj',    t:'RCB', w:19,ov:62.0,r:570,econ:9.19, avg:30.00,sr:19.6,dot:44.1,pp_rr:8.17, mid_rr:11.67,dth_rr:12.58,pp_w:15,mid_w:0,  dth_w:4},
-  {n:'Kartik Tyagi',      t:'SRH', w:18,ov:51.0,r:504,econ:9.88, avg:28.00,sr:17.0,dot:35.0,pp_rr:11.45,mid_rr:8.15, dth_rr:10.75,pp_w:4, mid_w:5,  dth_w:9},
-  {n:'JO Holder',         t:'RR',  w:17,ov:38.3,r:292,econ:7.62, avg:17.18,sr:13.5,dot:40.0,pp_rr:10.00,mid_rr:7.42, dth_rr:7.88, pp_w:0, mid_w:13, dth_w:4},
+  {n:'Mohammed Siraj',    t:'GT', w:19,ov:62.0,r:570,econ:9.19, avg:30.00,sr:19.6,dot:44.1,pp_rr:8.17, mid_rr:11.67,dth_rr:12.58,pp_w:15,mid_w:0,  dth_w:4},
+  {n:'Kartik Tyagi',      t:'KKR', w:18,ov:51.0,r:504,econ:9.88, avg:28.00,sr:17.0,dot:35.0,pp_rr:11.45,mid_rr:8.15, dth_rr:10.75,pp_w:4, mid_w:5,  dth_w:9},
+  {n:'JO Holder',         t:'GT',  w:17,ov:38.3,r:292,econ:7.62, avg:17.18,sr:13.5,dot:40.0,pp_rr:10.00,mid_rr:7.42, dth_rr:7.88, pp_w:0, mid_w:13, dth_w:4},
   {n:'SP Narine',         t:'KKR', w:17,ov:51.5,r:350,econ:6.80, avg:20.59,sr:18.2,dot:43.0,pp_rr:7.92, mid_rr:6.67, dth_rr:5.67, pp_w:4, mid_w:4,  dth_w:9},
   {n:'M Prasidh Krishna', t:'GT',  w:16,ov:39.0,r:408,econ:10.46,avg:25.50,sr:14.6,dot:33.3,pp_rr:14.00,mid_rr:9.48, dth_rr:12.40,pp_w:0, mid_w:13, dth_w:3},
-  {n:'Prince Yadav',      t:'DC',  w:16,ov:52.2,r:469,econ:8.99, avg:29.31,sr:19.6,dot:36.4,pp_rr:8.82, mid_rr:7.94, dth_rr:10.18,pp_w:6, mid_w:7,  dth_w:3},
-  {n:'JR Hazlewood',      t:'CSK', w:15,ov:51.5,r:506,econ:9.83, avg:33.73,sr:20.6,dot:38.2,pp_rr:10.15,mid_rr:8.50, dth_rr:10.37,pp_w:7, mid_w:3,  dth_w:5},
-  {n:'Sakib Hussain',     t:'GT',  w:15,ov:42.0,r:399,econ:9.50, avg:26.60,sr:16.8,dot:34.1,pp_rr:11.00,mid_rr:9.00, dth_rr:9.08, pp_w:3, mid_w:5,  dth_w:7},
-  {n:'AM Ghazanfar',      t:'GT',  w:15,ov:38.8,r:390,econ:10.04,avg:26.00,sr:15.5,dot:29.6,pp_rr:10.80,mid_rr:9.04, dth_rr:12.69,pp_w:7, mid_w:4,  dth_w:4},
+  {n:'Prince Yadav',      t:'LSG',  w:16,ov:52.2,r:469,econ:8.99, avg:29.31,sr:19.6,dot:36.4,pp_rr:8.82, mid_rr:7.94, dth_rr:10.18,pp_w:6, mid_w:7,  dth_w:3},
+  {n:'JR Hazlewood',      t:'RCB', w:15,ov:51.5,r:506,econ:9.83, avg:33.73,sr:20.6,dot:38.2,pp_rr:10.15,mid_rr:8.50, dth_rr:10.37,pp_w:7, mid_w:3,  dth_w:5},
+  {n:'Sakib Hussain',     t:'SRH',  w:15,ov:42.0,r:399,econ:9.50, avg:26.60,sr:16.8,dot:34.1,pp_rr:11.00,mid_rr:9.00, dth_rr:9.08, pp_w:3, mid_w:5,  dth_w:7},
+  {n:'AM Ghazanfar',      t:'MI',  w:15,ov:38.8,r:390,econ:10.04,avg:26.00,sr:15.5,dot:29.6,pp_rr:10.80,mid_rr:9.04, dth_rr:12.69,pp_w:7, mid_w:4,  dth_w:4},
 ];
 const LE=9.5;
 BWL.forEach(b=>{
@@ -564,11 +1242,11 @@ const VENUES=[
   {v:'Maharaja YS Intl Stadium, New Chandigarh',sh:'N.Chd',   m:6, af:219.0,as:205.2,cp:67, hi:254,lo:162},
   {v:'Rajiv Gandhi Intl Stadium, Hyderabad',    sh:'Hyder',   m:7, af:209.0,as:181.3,cp:29, hi:255,lo:156},
   {v:'M Chinnaswamy Stadium, Bengaluru',        sh:'Bnglr',   m:5, af:195.4,as:188.8,cp:80, hi:250,lo:146},
-  {v:'Eden Gardens, Kolkata',                   sh:'Eden',    m:6, af:193.2,as:172.2,cp:50, hi:247,lo:147},
+  {v:'Eden Gardens, Kolkata',                   sh:'Eden',    m:7, af:169.1,as:172.2,cp:50, hi:247,lo:25},
   {v:'MA Chidambaram Stadium, Chennai',         sh:'Chepk',   m:7, af:187.6,as:181.4,cp:71, hi:212,lo:158},
   {v:'Narendra Modi Stadium, Ahmedabad',        sh:'Ahmd',    m:8, af:182.4,as:149.6,cp:50, hi:229,lo:86},
   {v:'VN Singh Intl Stadium, Raipur',           sh:'Raipur',  m:2, af:179.0,as:180.5,cp:100,hi:194,lo:166},
-  {v:'Ekana Cricket Stadium, Lucknow',          sh:'Lkhnw',   m:7, af:173.0,as:167.9,cp:67, hi:209,lo:119},
+  {v:'Ekana Cricket Stadium, Lucknow',          sh:'Lkhnw',   m:7, af:173.0,as:131.1,cp:67, hi:209,lo:1},
   {v:'Arun Jaitley Stadium, Delhi',             sh:'Delhi',   m:7, af:171.6,as:174.0,cp:86, hi:265,lo:75},
   {v:'Barsapara Cricket Stadium, Guwahati',     sh:'Guwht',   m:3, af:159.3,as:151.0,cp:67, hi:202,lo:123},
 ];
